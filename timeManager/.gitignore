@@ -4,8 +4,11 @@
 # If you run "mix test --cover", coverage assets end up here.
 /cover/
 
+<<<<<<< HEAD
 /postgres-data/
 
+=======
+>>>>>>> 46965fcc791e57c1357b691eca5735808174cd57
 # The directory Mix downloads your dependencies sources to.
 /deps/
 
