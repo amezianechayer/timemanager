@@ -1,4 +1,5 @@
 <template>
+  <HeaderComponent />
   <div class="moderation-container">
     <h1>Modération - Arkham Tracker</h1>
     <table>
@@ -26,7 +27,10 @@
 </template>
 
 <script>
+import HeaderComponent from "@/components/HeaderComponent.vue";
+
 export default {
+  components: {HeaderComponent},
   data() {
     return {
       reports: [

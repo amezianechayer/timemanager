@@ -1,4 +1,5 @@
 <template>
+  <HeaderComponent />
   <div class="hours-tracking-container">
     <h1>Suivi des Heures - Arkham Tracker</h1>
     <table>
@@ -25,7 +26,10 @@
 </template>
 
 <script>
+import HeaderComponent from "@/components/HeaderComponent.vue";
+
 export default {
+  components: {HeaderComponent},
   data() {
     return {
       employees: [

@@ -1,5 +1,5 @@
 <template>
-  <footer>
+  <footer class="bg-gray-800 text-white text-center py-4 fixed bottom-0 left-0 w-full">
     <p>&copy; 2024 MonSite. Tous droits réservés.</p>
   </footer>
 </template>
@@ -9,10 +9,5 @@ export default {};
 </script>
 
 <style scoped>
-footer {
-  background-color: #333;
-  color: white;
-  text-align: center;
-  padding: 10px;
-}
+/* Aucune autre règle nécessaire ici */
 </style>
