@@ -13,12 +13,11 @@ defmodule ApiTimeManagerWeb.ClockController do
 
   def show_by_user(conn, %{"userID" => user_id}) do
     clocks = Clocks.get_clocks_by_user(user_id)
-    render(conn, :index, clocks: clocks)
+    updated_clocks = Enum.map(clocks, fn clock -> Map.put(clock, :user_id, user_id) end)
+    render(conn, :index, clocks: updated_clocks)
   end
 
   def create_for_user(conn, %{"userID" => user_id, "clock" => clock_params}) do
-    IO.inspect(clock_params)
-    IO.inspect(user_id)
     clock_params = Map.put(clock_params, "user_id", user_id)
     with {:ok, %Clock{} = clock} <- Clocks.create_clock(clock_params) do
       conn

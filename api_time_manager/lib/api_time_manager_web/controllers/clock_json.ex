@@ -19,7 +19,8 @@ defmodule ApiTimeManagerWeb.ClockJSON do
     %{
       id: clock.id,
       time: clock.time,
-      status: clock.status
+      status: clock.status,
+      user_id: clock.user_id
     }
   end
 end
