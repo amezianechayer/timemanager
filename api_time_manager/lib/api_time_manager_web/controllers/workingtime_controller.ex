@@ -47,6 +47,7 @@ defmodule ApiTimeManagerWeb.WorkingtimeController do
     render(conn, :show, workingtime: workingtime)
   end
 
+
   def update(conn, %{"id" => id, "workingtime" => workingtime_params}) do
     workingtime = TimeManagement.get_workingtime!(id)
 

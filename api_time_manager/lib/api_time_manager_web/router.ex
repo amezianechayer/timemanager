@@ -12,6 +12,7 @@ defmodule ApiTimeManagerWeb.Router do
     resources "/workingtimes", WorkingtimeController, except: [:new, :edit]
       post "/workingtimes/:userID", WorkingtimeController, :create_for_user
       get "/workingtimes/:userID/:id", WorkingtimeController, :get_working_time_for_user
+      put "/workingtimes/:id", WorkingtimeController, :edit
 
     # Clock routes
       get "/clocks/:userID", ClockController, :show_by_user
