@@ -6,6 +6,7 @@ defmodule ApiTimeManager.Accounts.User do
     field :email, :string
     field :username, :string
     has_many :clocks, ApiTimeManager.Clocks.Clock
+    has_many :working_times, ApiTimeManager.WorkingTimes.WorkingTime
 
     timestamps()
   end
