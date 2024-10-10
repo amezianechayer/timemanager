@@ -3,8 +3,8 @@ defmodule ApiTimeManager.Accounts.User do
   import Ecto.Changeset
 
   schema "users" do
-    field :email, :string
-    field :username, :string
+    field :email, :string, null: false
+    field :username, :string, null: false
     has_many :clocks, ApiTimeManager.Clocks.Clock
 
     timestamps()
