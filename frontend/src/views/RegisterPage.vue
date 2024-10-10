@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <img src="@/assets/fondEcran.webp" alt="Arkham Tracker Logo" class="background-image">
-    <div class="overlay"></div> <!-- Superposition sombre -->
+    <div class="overlay"></div>
     <h1 class="text-6xl font-bold leading-none mr-10">
       <span class="block text-white">Arkham</span>
       <span class="block ml-12 text-white">Tracker</span>
@@ -10,26 +10,27 @@
     <div class="login-card">
       <img src="@/assets/iconeApp.webp" alt="Arkham Tracker Logo" class="h-24 w-24 rounded-2xl mx-auto mb-2">
 
-      <form @submit.prevent="handleLogin">
-        <div class="form-group">
-          <label for="userType">Type d'utilisateur</label>
-          <select id="userType" v-model="userType" required>
-            <option value="admin">Admin</option>
-            <option value="user">Utilisateur</option>
-          </select>
-        </div>
+      <form @submit.prevent="handleRegister">
         <div class="form-group">
           <label for="username">Nom d'utilisateur</label>
           <input type="text" id="username" v-model="username" required />
         </div>
         <div class="form-group">
+          <label for="mail">Adresse mail</label>
+          <input type="email" id="mail" v-model="mail" required />
+        </div>
+        <div class="form-group">
           <label for="password">Mot de passe</label>
           <input type="password" id="password" v-model="password" required />
         </div>
-        <button type="submit">Se connecter</button>
+        <div class="form-group">
+          <label for="confirmPassword">Confirmer le mot de passe</label>
+          <input type="password" id="confirmPassword" v-model="confirmPassword" required />
+        </div>
+        <button type="submit">S'inscrire</button>
         <p class="error-message" v-if="errorMessage">{{ errorMessage }}</p>
-        <p class="register-link">
-          <router-link to="/register">Pas encore membre ?</router-link>
+        <p class="login-link">
+          <button type="button" @click="goToLogin">Déjà membre ? Se connecter</button>
         </p>
       </form>
     </div>
@@ -40,28 +41,47 @@
 export default {
   data() {
     return {
-      userType: 'user', // Valeur par défaut
       username: '',
+      mail: '', // Ajoutez cette ligne pour stocker l'adresse e-mail
       password: '',
+      confirmPassword: '',
       errorMessage: ''
     };
   },
   methods: {
-    handleLogin() {
-      // Logique de connexion (exemple de simulation)
-      if (this.userType === 'admin' && this.username === 'admin' && this.password === 'adminPassword') {
-        this.$router.push({ name: 'HomeAdmin' }); // Redirige vers la page d'accueil admin
-      } else if (this.userType === 'user' && this.username === 'user' && this.password === 'userPassword') {
-        this.$router.push({ name: 'HomeUser' }); // Redirige vers la page d'accueil utilisateur
-      } else {
-        this.errorMessage = 'Nom d\'utilisateur ou mot de passe incorrect.';
+    handleRegister() {
+      if (this.password !== this.confirmPassword) {
+        this.errorMessage = 'Les mots de passe ne correspondent pas.';
+        return;
       }
+
+      if (!this.validateEmail(this.mail)) {
+        this.errorMessage = 'Veuillez entrer une adresse e-mail valide.';
+        return;
+      }
+
+      // Logique d'inscription (exemple de simulation)
+      if (this.username && this.mail && this.password) {
+        // Enregistrez l'utilisateur et redirigez
+        this.$router.push({ name: 'HomeUser' }); // Remplacez par la route appropriée
+      } else {
+        this.errorMessage = 'Veuillez remplir tous les champs.';
+      }
+    },
+    validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expression régulière pour valider l'e-mail
+      return re.test(String(email).toLowerCase());
+    },
+    goToLogin() {
+      this.$router.push({ name: 'Login' }); // Remplacez 'Login' par le nom de votre route de connexion
     }
   }
 };
 </script>
 
 <style scoped>
+/* Les styles sont identiques à ceux de la page de connexion */
+
 .login-container {
   display: flex;
   justify-content: center;
@@ -107,6 +127,7 @@ h1 {
   width: 300px;
   position: relative; /* Pour s'assurer que le card est au-dessus de l'image */
   z-index: 2; /* Assure que le card est au-dessus de l'image de fond */
+  margin-bottom: 60px;
 }
 
 .form-group {
@@ -116,21 +137,6 @@ h1 {
 label {
   display: block;
   margin-bottom: 5px;
-}
-
-select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #444;
-  border-radius: 4px;
-  background-color: #3b3b3b; /* Couleur de fond */
-  color: #000; /* Couleur du texte (noir) */
-}
-
-/* Styles supplémentaires */
-select:hover, select:focus {
-  background-color: #444; /* Couleur de fond au survol ou au focus */
-  color: #ffffff; /* Couleur du texte au survol ou au focus */
 }
 
 input {
@@ -144,7 +150,7 @@ input {
 
 input:focus {
   outline: none;
-  border-color: #007bff; /* Couleur de bordure au focus */
+  border-color: #007bff; /* Couleur de survol */
 }
 
 button {
@@ -168,13 +174,16 @@ button:hover {
   margin-top: 10px;
 }
 
-.register-link {
+.login-link {
   text-align: center;
   margin-top: 10px;
 }
 
-.register-link a {
-  color: #007bff; /* Couleur du lien */
+.login-link button {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
   text-decoration: underline;
 }
 </style>

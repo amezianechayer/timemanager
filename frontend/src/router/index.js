@@ -26,6 +26,11 @@ const routes = [
         name: 'board',
         component: () => import("@/views/BoardPage.vue")
     },
+    {
+        path: '/register',
+        name: 'register',
+        component: () => import("@/views/RegisterPage.vue")
+    },
 ];
 
 const router = createRouter({
