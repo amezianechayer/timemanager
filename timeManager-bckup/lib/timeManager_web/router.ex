@@ -26,7 +26,6 @@ defmodule TimeManagerWeb.Router do
 
     resources "/clocks", ClockController, except: [:new, :edit]
     post "/clocks/:userID", ClockController, :create
-
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

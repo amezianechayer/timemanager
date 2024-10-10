@@ -14,9 +14,7 @@ defmodule TimeManagerWeb.ClockController do
   end
 
   def create(conn, %{"userID" => id}) do
-    IO.inspect(id)
     with {:ok, %Clock{} = clock} <- Account.create_clock(%{"userID" => id}) do
-      IO.inspect(clock)
       conn
       |> put_status(:created)
       |> put_resp_header("location", ~p"/api/clocks/#{id}")
