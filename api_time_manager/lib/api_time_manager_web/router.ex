@@ -9,10 +9,13 @@ defmodule ApiTimeManagerWeb.Router do
     pipe_through :api
 
     resources "/users", UserController, except: [:new, :edit]
+    resources "/workingtimes", WorkingtimeController, except: [:new, :edit]
+      post "/workingtimes/:userID", WorkingtimeController, :create_for_user
+      get "/workingtimes/:userID/:id", WorkingtimeController, :get_working_time_for_user
 
     # Clock routes
-    get "/clocks/:userID", ClockController, :show_by_user
-    post "/clocks/:userID", ClockController, :create_for_user
+      get "/clocks/:userID", ClockController, :show_by_user
+      post "/clocks/:userID", ClockController, :create_for_user
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

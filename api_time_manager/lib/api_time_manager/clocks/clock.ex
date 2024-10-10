@@ -3,9 +3,9 @@ defmodule ApiTimeManager.Clocks.Clock do
   import Ecto.Changeset
 
   schema "clocks" do
-    field :status, :boolean, default: false, null: false
-    field :time, :naive_datetime, null: false
-    belongs_to :user, ApiTimeManager.Accounts.User, null: false
+    field :status, :boolean, default: false
+    field :time, :naive_datetime
+    belongs_to :user, ApiTimeManager.Accounts.User
 
     timestamps(type: :utc_datetime)
   end
