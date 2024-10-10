@@ -4,6 +4,8 @@
     <nav>
       <router-link to="/home">Home</router-link>
       <router-link to="/about">About</router-link>
+      <router-link to="/moderation">Moderation</router-link>
+      <router-link to="/board">Board</router-link>
     </nav>
   </header>
 </template>
