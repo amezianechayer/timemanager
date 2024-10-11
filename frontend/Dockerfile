@@ -6,7 +6,6 @@ COPY package*.json ./
 
 RUN apk add --no-cache git
 
-
 RUN npm install npm@latest -g
 RUN npm install npm@latest -g
 
