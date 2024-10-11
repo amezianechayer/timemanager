@@ -1,4 +1,5 @@
 <template>
+  <HeaderComponent />
     <div>
       <h1>Suivi des Heures - Arkham Tracker</h1>
       <HeuresChart :chartData="chartData" :options="chartOptions" />
@@ -7,9 +8,11 @@
   
   <script>
   import HeuresChart from '../components/HeuresChart.vue';
+  import HeaderComponent from "@/components/HeaderComponent.vue";
   
   export default {
     components: {
+      HeaderComponent,
       HeuresChart
     },
     data() {

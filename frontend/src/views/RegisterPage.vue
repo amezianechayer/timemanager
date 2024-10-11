@@ -38,46 +38,68 @@
 </template>
 
 <script>
+import axios from "axios";
+import { useRouter } from "vue-router";
+import { ref } from 'vue';
+
 export default {
-  data() {
-    return {
-      username: '',
-      mail: '', // Ajoutez cette ligne pour stocker l'adresse e-mail
-      password: '',
-      confirmPassword: '',
-      errorMessage: ''
-    };
-  },
-  methods: {
-    handleRegister() {
-      if (this.password !== this.confirmPassword) {
-        this.errorMessage = 'Les mots de passe ne correspondent pas.';
-        return;
-      }
+  setup() {
+    const router = useRouter();
+    const username = ref('');
+    const mail = ref('');
+    const password = ref('');
+    const confirmPassword = ref('');
+    const errorMessage = ref('');
 
-      if (!this.validateEmail(this.mail)) {
-        this.errorMessage = 'Veuillez entrer une adresse e-mail valide.';
-        return;
-      }
-
-      // Logique d'inscription (exemple de simulation)
-      if (this.username && this.mail && this.password) {
-        // Enregistrez l'utilisateur et redirigez
-        this.$router.push({ name: 'HomeUser' }); // Remplacez par la route appropriée
-      } else {
-        this.errorMessage = 'Veuillez remplir tous les champs.';
-      }
-    },
-    validateEmail(email) {
-      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expression régulière pour valider l'e-mail
+    const validateEmail = (email) => {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return re.test(String(email).toLowerCase());
-    },
-    goToLogin() {
-      this.$router.push({ name: 'Login' }); // Remplacez 'Login' par le nom de votre route de connexion
-    }
+    };
+
+    const handleRegister = async () => {
+      if (password.value !== confirmPassword.value) {
+        errorMessage.value = 'Les mots de passe ne correspondent pas.';
+        return;
+      }
+
+      if (!validateEmail(mail.value)) {
+        errorMessage.value = 'Veuillez entrer une adresse e-mail valide.';
+        return;
+      }
+
+      try {
+        const response = await axios.post('/register', {
+          username: username.value,
+          email: mail.value,
+          password: password.value,
+        });
+
+        if (response.status === 200) {
+          await router.push({name: 'Login'});
+        }
+      } catch (error) {
+        errorMessage.value = 'Une erreur est survenue lors de l’inscription.';
+      }
+    };
+
+    const goToLogin = () => {
+      router.push({ name: 'Login' });
+    };
+
+    return {
+      username,
+      mail,
+      password,
+      confirmPassword,
+      errorMessage,
+      handleRegister,
+      goToLogin,
+    };
   }
 };
 </script>
+
+
 
 <style scoped>
 /* Les styles sont identiques à ceux de la page de connexion */
@@ -187,3 +209,5 @@ button:hover {
   text-decoration: underline;
 }
 </style>
+
+

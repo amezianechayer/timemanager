@@ -31,6 +31,7 @@ const routes = [
       name: 'chart',
       component: () => import("@/views/ChartHours.vue")
   },
+    {
         path: '/register',
         name: 'register',
         component: () => import("@/views/RegisterPage.vue")

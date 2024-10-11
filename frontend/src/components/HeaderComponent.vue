@@ -12,6 +12,7 @@
         <router-link to="/about" class="hover:underline p-2">About</router-link>
         <router-link to="/moderation" class="hover:underline p-2">Moderation</router-link>
         <router-link to="/board" class="hover:underline p-2">Board</router-link>
+        <router-link to="/chart" class="hover:underline p-2">Chart</router-link>
       </div>
     </nav>
   </header>

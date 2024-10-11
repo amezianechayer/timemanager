@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import { useRouter } from "vue-router";
+import axios from "axios";
 export default {
   data() {
     return {
@@ -46,20 +48,44 @@ export default {
       errorMessage: ''
     };
   },
-  methods: {
-    handleLogin() {
-      // Logique de connexion (exemple de simulation)
-      if (this.userType === 'admin' && this.username === 'admin' && this.password === 'adminPassword') {
-        this.$router.push({ name: 'HomeAdmin' }); // Redirige vers la page d'accueil admin
-      } else if (this.userType === 'user' && this.username === 'user' && this.password === 'userPassword') {
-        this.$router.push({ name: 'HomeUser' }); // Redirige vers la page d'accueil utilisateur
-      } else {
+  setup() {
+    const router = useRouter();
+
+    const handleLogin = async () => {
+      if (!this.username || !this.password) {
+        this.errorMessage = 'Veuillez remplir tous les champs.';
+        return;
+      }
+
+      try {
+        const { data } = await axios.post('/login', {
+          userType: this.userType,
+          username: this.username,
+          password: this.password
+        }, { withCredentials: true });
+
+        // Stockage du token dans les en-têtes pour les requêtes futures
+        axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+
+        // Redirection après login
+        if (this.userType === 'admin') {
+          router.push({ name: 'HomeAdmin' }); // Redirige vers la page d'accueil admin
+        } else {
+          router.push({ name: 'HomeUser' }); // Redirige vers la page d'accueil utilisateur
+        }
+      } catch (error) {
         this.errorMessage = 'Nom d\'utilisateur ou mot de passe incorrect.';
       }
-    }
+    };
+
+    return {
+      handleLogin
+    };
   }
 };
 </script>
+
+
 
 <style scoped>
 .login-container {
