@@ -1,0 +1,24 @@
+<.header>
+  Listing Workingtimes
+  <:actions>
+    <.link href={~p"/workingtimes/new"}>
+      <.button>New Timesheet</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="workingtimes" rows={@workingtimes} row_click={&JS.navigate(~p"/workingtimes/#{&1}")}>
+  <:col :let={timesheet} label="Start time"><%= timesheet.start_time %></:col>
+  <:col :let={timesheet} label="End time"><%= timesheet.end_time %></:col>
+  <:action :let={timesheet}>
+    <div class="sr-only">
+      <.link navigate={~p"/workingtimes/#{timesheet}"}>Show</.link>
+    </div>
+    <.link navigate={~p"/workingtimes/#{timesheet}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={timesheet}>
+    <.link href={~p"/workingtimes/#{timesheet}"} method="delete" data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>

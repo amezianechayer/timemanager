@@ -1,0 +1,16 @@
+<.header>
+  Clock <%= @clock.id %>
+  <:subtitle>This is a clock record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/clocks/#{@clock}/edit"}>
+      <.button>Edit clock</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Clock in"><%= @clock.clock_in %></:item>
+  <:item title="Clock out"><%= @clock.clock_out %></:item>
+</.list>
+
+<.back navigate={~p"/clocks"}>Back to clocks</.back>
