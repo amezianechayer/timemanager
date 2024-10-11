@@ -19,6 +19,4 @@ COPY . .
 
 EXPOSE 8080
 
-HEALTHCHECK --interval=1m --timeout=30s --retries=3 CMD curl --fail http://localhost:8080 || exit 1
-
 CMD ["npm", "run", "serve"]
