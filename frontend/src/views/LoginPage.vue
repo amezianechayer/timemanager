@@ -1,8 +1,7 @@
-
 <template>
   <div class="login-container">
     <img src="@/assets/fondEcran.webp" alt="Arkham Tracker Logo" class="background-image">
-    <div class="overlay"></div> <!-- Superposition sombre -->
+    <div class="overlay"></div>
     <h1 class="text-6xl font-bold leading-none mr-10">
       <span class="block text-white">Arkham</span>
       <span class="block ml-12 text-white">Tracker</span>
@@ -20,7 +19,7 @@
           </select>
         </div>
         <div class="form-group">
-          <label for="email">adresse mail</label>
+          <label for="email">Adresse mail</label>
           <input type="text" id="email" v-model="email" required />
         </div>
         <div class="form-group">
@@ -39,12 +38,12 @@
 
 <script>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import axios from 'axios';
 
 export default {
   setup() {
-
-   // const userType = ref('user'); // Valeur par défaut
+    const router = useRouter();
     const email = ref('');
     const hash_password = ref('');
     const errorMessage = ref('');
@@ -57,19 +56,21 @@ export default {
 
       try {
         const { data } = await axios.post('http://localhost:4000/api/users/login', {
-          email: email.value,
-          hash_password: hash_password.value
+          user: {
+            email: email.value,
+            password: hash_password.value
+          }
         }, { withCredentials: true });
 
         axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-
+        localStorage.setItem('token', data.token); // Store the token in localStorage
+        router.push('/home'); // Redirect to home page
       } catch (error) {
         errorMessage.value = error.response?.data?.error || 'Nom d\'utilisateur ou mot de passe incorrect.';
       }
     };
 
     return {
-
       email,
       hash_password,
       errorMessage,
@@ -79,25 +80,26 @@ export default {
 };
 </script>
 
+
 <style scoped>
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  position: relative; /* Position relative pour que l'image de fond s'embrique correctement */
+  position: relative;
   color: #f5f5f5;
-  overflow: hidden; /* Pour éviter le débordement */
+  overflow: hidden;
 }
 
 .background-image {
-  position: absolute; /* Positionne l'image en arrière-plan */
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Pour que l'image couvre tout l'espace */
-  z-index: 0; /* S'assure que l'image est derrière le contenu */
+  object-fit: cover;
+  z-index: 0;
 }
 
 .overlay {
@@ -106,25 +108,25 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Couleur noire avec opacité */
-  z-index: 1; /* Assure que la superposition est au-dessus de l'image de fond */
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
 }
 
 h1 {
   text-align: center;
   margin-bottom: 20px;
-  position: relative; /* Positionne le texte par rapport à l'image de fond */
-  z-index: 2; /* S'assure que le texte est au-dessus de l'image de fond */
+  position: relative;
+  z-index: 2;
 }
 
 .login-card {
-  background-color: #282828; /* Couleur du card */
+  background-color: #282828;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  width: 400px; /* Largeur ajustée pour correspondre à la page d'inscription */
-  position: relative; /* Pour s'assurer que le card est au-dessus de l'image */
-  z-index: 2; /* Assure que le card est au-dessus de l'image de fond */
+  width: 400px;
+  position: relative;
+  z-index: 2;
 }
 
 .form-group {
@@ -141,14 +143,14 @@ select {
   padding: 10px;
   border: 1px solid #444;
   border-radius: 4px;
-  background-color: #3b3b3b; /* Couleur de fond */
-  color: #000; /* Couleur du texte (noir) */
+  background-color: #3b3b3b;
+  color: #000;
 }
 
-/* Styles supplémentaires */
-select:hover, select:focus {
-  background-color: #444; /* Couleur de fond au survol ou au focus */
-  color: #ffffff; /* Couleur du texte au survol ou au focus */
+select:hover,
+select:focus {
+  background-color: #444;
+  color: #ffffff;
 }
 
 input {
@@ -162,7 +164,7 @@ input {
 
 input:focus {
   outline: none;
-  border-color: #007bff; /* Couleur de bordure au focus */
+  border-color: #007bff;
 }
 
 button {
@@ -177,11 +179,11 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3; /* Couleur de survol du bouton */
+  background-color: #0056b3;
 }
 
 .error-message {
-  color: #ff0000; /* Couleur rouge pour les messages d'erreur */
+  color: #ff0000;
   text-align: center;
   margin-top: 10px;
 }
@@ -192,7 +194,7 @@ button:hover {
 }
 
 .register-link a {
-  color: #007bff; /* Couleur du lien */
+  color: #007bff;
   text-decoration: underline;
 }
 </style>
