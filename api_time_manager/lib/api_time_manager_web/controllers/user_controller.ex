@@ -6,24 +6,12 @@ defmodule ApiTimeManagerWeb.UserController do
 
   action_fallback ApiTimeManagerWeb.FallbackController
 
-
-  ## Old create controller
-  # def create(conn, %{"user" => user_params}) do
-  #   with {:ok, %User{} = user} <- Accounts.create_user(user_params) do
-  #     conn
-  #     |> put_status(:created)
-  #     |> put_resp_header("location", ~p"/api/users/#{user}")
-  #     |> render(:show, user: user)
-  #   end
-  # end
-
   def create(conn, %{"user" => user_params}) do
     with {:ok, %User{} = user} <- Accounts.create_user(user_params),
           {:ok, token, _full_claims} <- ApiTimeManager.Guardian.encode_and_sign(user)
           do
         conn
         |> put_status(:created)
-        # |> put_resp_header("location", ~p"/api/users/register/#{user}")
         |> render(:show, user: user, token: token)
       end
   end
