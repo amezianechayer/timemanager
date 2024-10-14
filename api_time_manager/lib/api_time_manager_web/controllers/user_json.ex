@@ -15,11 +15,11 @@
       %{data: data(user)}
     end
 
-    defp data(%User{} = user) do
-      %{
-        id: user.id,
-        username: user.username,
-        email: user.email
-      }
-    end
+  defp data(%User{} = user) do
+    %{
+      id: user.id,
+      username: user.username,
+      email: user.email
+    }
   end
+end

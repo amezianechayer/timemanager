@@ -31,6 +31,11 @@ config :api_time_manager, ApiTimeManagerWeb.Endpoint,
 # at the `config/runtime.exs`.
 config :api_time_manager, ApiTimeManager.Mailer, adapter: Swoosh.Adapters.Local
 
+config :api_time_manager, ApiTimeManager.Guardian,
+  issuer: "api_time_manager",
+  secret_key: "+1nY+ozAPV2NHonBit2nwciVsHJvfCG0cZyGt6t8ubYYXSkbMW3c1wg5qWAB/EGN"
+
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

@@ -25,7 +25,6 @@ config :api_time_manager, ApiTimeManagerWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "nwNQY5DGTXsdOkCM7Vcol8rXBND8ZnuDyV03CsOfeZ0UwJfSjnRaJKF0W2UjARI+",
   watchers: []
-
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed
