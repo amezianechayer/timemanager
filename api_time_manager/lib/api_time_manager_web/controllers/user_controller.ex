@@ -52,19 +52,31 @@ defmodule ApiTimeManagerWeb.UserController do
     end
   end
 
-  def sign_in(conn, %{"user" => %{"email" => email, "hash_password" => hash_password}}) do
-    case ApiTimeManager.Guardian.authenticate(email, hash_password) do
-      {:ok, user, token} ->
+  def sign_in(conn, %{"email" => email, "hash_password" => password}) do
+    # Implémentez votre logique d'authentification ici.
+    case Accounts.authenticate_user(email, password) do
+      {:ok, user} ->
         conn
-        |> put_status(:ok)
-        # |> put_resp_header("location", ~p"/api/users/login/#{user}")
-        |> render("account_token.json", user: user, token: token)
-      {:error, _reason} ->
+        |> put_flash(:info, "Successfully signed in!")
+        |> redirect(to: "/some_path")
+
+      {:error, reason} ->
         conn
-        |> put_status(:unauthorized)
-        |> render("error.json", error: "invalid credentials")
+        |> put_flash(:error, reason)
+        |> render("sign_in.html")
     end
   end
 
-
+  def sign_in(conn, _params) do
+    conn
+    |> put_flash(:error, "Invalid parameters")
+    |> render("sign_in.html")
+  end
 end
+
+
+
+
+
+
+

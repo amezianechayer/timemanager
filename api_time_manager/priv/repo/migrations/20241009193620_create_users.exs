@@ -1,16 +1,21 @@
-defmodule ApiTimeManager.Repo.Migrations.CreateUsers do
-  use Ecto.Migration
+defmodule YourApp.Accounts.User do
+  use Ecto.Schema
+  import Ecto.Changeset
 
-  def change do
-    create table(:users) do
-      add :username, :string
-      add :email, :string
-      add :hash_password, :text
+  schema "users" do
+    field :username, :string
+    field :email, :string
+    field :hash_password, :string
 
-      timestamps(type: :utc_datetime)
-    end
+    timestamps()
+  end
 
-    drop_if_exists index(:users, [:email])
-    create unique_index(:users, [:email])
+  @doc false
+  def changeset(user, attrs) do
+    user
+    |> cast(attrs, [:username, :email, :hash_password])
+    |> validate_required([:username, :email, :hash_password])
+    |> unique_constraint(:email)
+    |> unique_constraint(:username)
   end
 end

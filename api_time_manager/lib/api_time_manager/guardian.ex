@@ -16,12 +16,12 @@ defmodule ApiTimeManager.Guardian do
   def authenticate(email, password) do
     case ApiTimeManager.Accounts.get_user_by_email(email) do
       nil ->
-        {:error, :unauthorized}
+        {:error, :invalid_credentials}
 
       resource ->
         case validate_password(password, resource.hash_password) do
           true -> create_token(resource)
-          false -> {:error, :reason_for_error}
+          false -> {:error, :invalid_credentials}
         end
     end
   end

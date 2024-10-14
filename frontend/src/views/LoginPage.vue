@@ -1,3 +1,4 @@
+
 <template>
   <div class="login-container">
     <img src="@/assets/fondEcran.webp" alt="Arkham Tracker Logo" class="background-image">
@@ -19,12 +20,12 @@
           </select>
         </div>
         <div class="form-group">
-          <label for="username">Nom d'utilisateur</label>
-          <input type="text" id="username" v-model="username" required />
+          <label for="email">adresse mail</label>
+          <input type="text" id="email" v-model="email" required />
         </div>
         <div class="form-group">
           <label for="password">Mot de passe</label>
-          <input type="password" id="password" v-model="password" required />
+          <input type="password" id="password" v-model="hash_password" required />
         </div>
         <button type="submit">Se connecter</button>
         <p class="error-message" v-if="errorMessage">{{ errorMessage }}</p>
@@ -37,55 +38,46 @@
 </template>
 
 <script>
-import { useRouter } from "vue-router";
-import axios from "axios";
+import { ref } from 'vue';
+import axios from 'axios';
+
 export default {
-  data() {
-    return {
-      userType: 'user', // Valeur par défaut
-      username: '',
-      password: '',
-      errorMessage: ''
-    };
-  },
   setup() {
-    const router = useRouter();
+
+   // const userType = ref('user'); // Valeur par défaut
+    const email = ref('');
+    const hash_password = ref('');
+    const errorMessage = ref('');
 
     const handleLogin = async () => {
-      if (!this.username || !this.password) {
-        this.errorMessage = 'Veuillez remplir tous les champs.';
+      if (!email.value || !hash_password.value) {
+        errorMessage.value = 'Veuillez remplir tous les champs.';
         return;
       }
 
       try {
-        const { data } = await axios.post('/login', {
-          userType: this.userType,
-          username: this.username,
-          password: this.password
+        const { data } = await axios.post('http://localhost:4000/api/users/login', {
+          email: email.value,
+          hash_password: hash_password.value
         }, { withCredentials: true });
 
-        // Stockage du token dans les en-têtes pour les requêtes futures
         axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
 
-        // Redirection après login
-        if (this.userType === 'admin') {
-          router.push({ name: 'HomeAdmin' }); // Redirige vers la page d'accueil admin
-        } else {
-          router.push({ name: 'HomeUser' }); // Redirige vers la page d'accueil utilisateur
-        }
       } catch (error) {
-        this.errorMessage = 'Nom d\'utilisateur ou mot de passe incorrect.';
+        errorMessage.value = error.response?.data?.error || 'Nom d\'utilisateur ou mot de passe incorrect.';
       }
     };
 
     return {
+
+      email,
+      hash_password,
+      errorMessage,
       handleLogin
     };
   }
 };
 </script>
-
-
 
 <style scoped>
 .login-container {
@@ -130,7 +122,7 @@ h1 {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  width: 300px;
+  width: 400px; /* Largeur ajustée pour correspondre à la page d'inscription */
   position: relative; /* Pour s'assurer que le card est au-dessus de l'image */
   z-index: 2; /* Assure que le card est au-dessus de l'image de fond */
 }
