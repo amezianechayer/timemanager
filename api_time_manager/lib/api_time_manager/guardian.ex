@@ -14,7 +14,7 @@ defmodule ApiTimeManager.Guardian do
   end
 
   def authenticate(email, password) do
-    case ApiTimeManager.Accounts.get_account_by_email(email) do
+    case ApiTimeManager.Accounts.get_user_by_email(email) do
       nil ->
         {:error, :unauthorized}
 

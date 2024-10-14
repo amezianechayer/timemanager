@@ -9,28 +9,21 @@ defmodule ApiTimeManagerWeb.Router do
     pipe_through :api
 
     resources "/users", UserController, except: [:new, :edit]
+    post "/users/login", UserController, :sign_in
 
-    # WORKING TIME ROUTES
+    # Working Time Routes
     resources "/workingtimes", WorkingtimeController, except: [:new, :edit]
     post "/workingtimes/:userID", WorkingtimeController, :create_for_user
     get "/workingtimes/:userID/:id", WorkingtimeController, :get_working_time_for_user
     put "/workingtimes/:id", WorkingtimeController, :edit
 
-    # CLOCKS ROUTES
+    # Clock Routes
     get "/clocks/:userID", ClockController, :show_by_user
     post "/clocks/:userID", ClockController, :create_for_user
-
-    # Auth routes
-    # post "/auth/register", UserController, :only [:create]
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:api_time_manager, :dev_routes) do
-    # If you want to use the LiveDashboard in production, you should put
-    # it behind authentication and allow only admins to access it.
-    # If your application does not have an admins-only section yet,
-    # you can use Plug.BasicAuth to set up some basic authentication
-    # as long as you are also using SSL (which you should anyway).
     import Phoenix.LiveDashboard.Router
 
     scope "/dev" do
