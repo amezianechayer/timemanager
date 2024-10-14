@@ -8,7 +8,10 @@ defmodule ApiTimeManagerWeb.Router do
   scope "/api", ApiTimeManagerWeb do
     pipe_through :api
 
-    resources "/users", UserController, except: [:new, :edit]
+    # resources "/users", UserController, except: [:new, :edit]
+    post "/users", UserController, :create
+    post "/users/login", UserController, :sign_in
+
 
     # WORKING TIME ROUTES
     resources "/workingtimes", WorkingtimeController, except: [:new, :edit]
