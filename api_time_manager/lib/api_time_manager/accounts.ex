@@ -101,7 +101,7 @@ defmodule ApiTimeManager.Accounts do
     User.changeset(user, attrs)
   end
 
-  def get_account_by_email(email) do
+  def get_user_by_email(email) do
     Repo.get_by(User, email: email)
   end
 end
