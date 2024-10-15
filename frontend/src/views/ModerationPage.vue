@@ -80,14 +80,24 @@ export default {
     async endDay(user) {
       if (user.end) return; // Prevent multiple clicks
       try {
+        const endTime = new Date().toISOString();
         const response = await axios.put(`http://localhost:4000/api/workingtimes/${user.workingtimeId}`, {
           workingtime: {
-            end: new Date().toISOString()
+            end: endTime
           }
         });
         const updatedWorkingTime = response.data.data;
         user.end = updatedWorkingTime.end; // Use the end time from the response
         user.workingTime = this.calculateWorkingTime(user.start, user.end); // Calculate the working time
+
+        // Send the working time to the clocks table
+        await axios.post(`http://localhost:4000/api/clocks/${user.id}`, {
+          clock: {
+            time: endTime,
+            status: true, // Set status as true
+            working_time: user.workingTime
+          }
+        });
       } catch (error) {
         console.error("Error updating the working time:", error);
       }
@@ -98,9 +108,9 @@ export default {
       const endTime = new Date(end).getTime();
       const diffMs = endTime - startTime;
 
-      const diffHrs = Math.floor(diffMs / 3600000); // Convertit les millisecondes en heures
-      const diffMins = Math.floor((diffMs % 3600000) / 60000); // Convertit les millisecondes restantes en minutes
-      const diffSecs = Math.floor((diffMs % 60000) / 1000); // Convertit les millisecondes restantes en secondes
+      const diffHrs = Math.floor(diffMs / 3600000); // Convert milliseconds to hours
+      const diffMins = Math.floor((diffMs % 3600000) / 60000); // Convert remaining milliseconds to minutes
+      const diffSecs = Math.floor((diffMs % 60000) / 1000); // Convert remaining milliseconds to seconds
 
       return `${diffHrs}h ${diffMins}m ${diffSecs}s`;
     }
