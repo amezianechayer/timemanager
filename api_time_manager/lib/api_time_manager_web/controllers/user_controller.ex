@@ -54,12 +54,3 @@ defmodule ApiTimeManagerWeb.UserController do
     end
   end
 end
-<<<<<<< HEAD
-=======
-
-
-
-
-
-
->>>>>>> 77bcc4b (deployment login/ register pages)
