@@ -13,9 +13,9 @@
       </thead>
       <tbody>
       <tr v-for="employee in employees" :key="employee.id">
-        <td>{{ employee.name }}</td>
-        <td>{{ employee.hoursWorked }}</td>
-        <td>{{ employee.hoursRequired }}</td>
+        <td>{{ employee.username }}</td>
+        <td>{{ employee.hoursWorked || '' }}</td>
+        <td>{{ employee.hoursRequired || '' }}</td>
         <td :class="{'overdue': isOverdue(employee)}">
           {{ isOverdue(employee) ? 'Retard' : 'À jour' }}
         </td>
@@ -27,23 +27,32 @@
 
 <script>
 import HeaderComponent from "@/components/HeaderComponent.vue";
+import axios from 'axios';
 
 export default {
-  components: {HeaderComponent},
+  components: { HeaderComponent },
   data() {
     return {
-      employees: [
-        { id: 1, name: 'Alice Dupont', hoursWorked: 35, hoursRequired: 40 },
-        { id: 2, name: 'Bob Martin', hoursWorked: 42, hoursRequired: 40 },
-        { id: 3, name: 'Claire Rousseau', hoursWorked: 30, hoursRequired: 35 },
-        { id: 4, name: 'David Lefevre', hoursWorked: 40, hoursRequired: 40 },
-      ],
+      employees: [] // Initialement vide, sera rempli avec les données de l'API
     };
   },
   methods: {
+    async fetchEmployees() {
+      try {
+        const response = await axios.get('http://localhost:4000/api/users');
+        console.log(response.data); // Affiche les données récupérées dans la console
+        this.employees = response.data.data;
+      } catch (error) {
+        console.error('Erreur lors de la récupération des utilisateurs:', error);
+      }
+    },
+
     isOverdue(employee) {
       return employee.hoursWorked < employee.hoursRequired; // Détermine si l'employé est en retard
     }
+  },
+  mounted() {
+    this.fetchEmployees(); // Récupère les utilisateurs quand le composant est monté
   }
 };
 </script>

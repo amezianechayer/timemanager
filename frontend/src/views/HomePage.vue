@@ -31,5 +31,28 @@ export default {
 </script>
 
 <style scoped>
-/* Pas de styles additionnels nécessaires si tu utilises Tailwind */
+nav {
+  background-color: #333;
+  padding: 10px;
+}
+
+nav a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+button.logout-button {
+  background-color: blue;
+  color: black;
+  font-size: 2xl; /* Same as the categories in the navbar */
+  font-weight: bold;
+  padding: 4px;
+  border-radius: xl;
+  z-index: 10;
+}
+
+button.logout-button:hover {
+  background-color: #1e3a8a; /* Darker blue for hover effect */
+}
 </style>

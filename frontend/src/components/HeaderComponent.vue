@@ -14,23 +14,35 @@
         <router-link to="/board" class="hover:underline p-2">Board</router-link>
         <router-link to="/chart" class="hover:underline p-2">Chart</router-link>
       </div>
+      <button @click="logout" class="logout-button">
+        Logout
+      </button>
     </nav>
   </header>
 </template>
 
-
-
 <script>
 import { computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import axios from 'axios';
 
 export default {
   setup() {
     const route = useRoute(); // Obtenir la route actuelle
+    const router = useRouter(); // Pour redirection après déconnexion
     const isLoginPage = computed(() => route.path === '/login'); // Vérifier si la route est celle de la page de connexion
+
+    const logout = () => {
+      localStorage.removeItem('token');
+      delete axios.defaults.headers.common['Authorization'];
+
+      // Redirection vers la page de connexion (chemin "/")
+      router.push('/');
+    };
 
     return {
       isLoginPage,
+      logout,
     };
   },
 };
@@ -41,9 +53,24 @@ nav {
   background-color: #333;
   padding: 10px;
 }
+
 nav a {
   color: white;
   margin: 0 10px;
   text-decoration: none;
+}
+
+button.logout-button {
+  background-color: blue;
+  color: black;
+  font-size: 2xl; /* Same as the categories in the navbar */
+  font-weight: bold;
+  padding: 4px;
+  border-radius: xl;
+  z-index: 10;
+}
+
+button.logout-button:hover {
+  background-color: #; /* Darker blue for hover effect */
 }
 </style>
