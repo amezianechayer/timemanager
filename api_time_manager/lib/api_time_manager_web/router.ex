@@ -16,7 +16,6 @@ defmodule ApiTimeManagerWeb.Router do
     post "/workingtimes/:userID", WorkingtimeController, :create_for_user
     get "/workingtimes/:userID/:id", WorkingtimeController, :get_working_time_for_user
     put "/workingtimes/:id", WorkingtimeController, :edit
-
     # Clock Routes
     get "/clocks/:userID", ClockController, :show_by_user
     post "/clocks/:userID", ClockController, :create_for_user
