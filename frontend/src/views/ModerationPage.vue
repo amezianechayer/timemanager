@@ -78,44 +78,49 @@ export default {
     },
 
     async endDay(user) {
-      if (user.end) return; // Prevent multiple clicks
+      if (user.end) return; // Empêche les clics multiples
       try {
         const endTime = new Date().toISOString();
+
+        // Mise à jour du temps de fin dans la table workingtimes
         const response = await axios.put(`http://localhost:4000/api/workingtimes/${user.workingtimeId}`, {
           workingtime: {
             end: endTime
           }
         });
         const updatedWorkingTime = response.data.data;
-        user.end = updatedWorkingTime.end; // Use the end time from the response
-        user.workingTime = this.calculateWorkingTime(user.start, user.end); // Calculate the working time
+        user.end = updatedWorkingTime.end;
 
-        // Send the working time to the clocks table
+        // Calcule le temps travaillé dans le bon format
+        const totalTimeWorked = this.calculateWorkingTime(user.start, user.end);
+        user.workingTime = totalTimeWorked;
+
+        // Envoi du temps de travail sous le bon format
         await axios.post(`http://localhost:4000/api/clocks/${user.id}`, {
           clock: {
-            time: endTime,
-            status: true, // Set status as true
-            working_time: user.workingTime
+            time: totalTimeWorked, // Temps travaillé au format "hh:mm:ss"
+            status: true
           }
         });
       } catch (error) {
-        console.error("Error updating the working time:", error);
+        console.error("Erreur lors de la mise à jour du temps de travail:", error);
       }
     },
+
 
     calculateWorkingTime(start, end) {
       const startTime = new Date(start).getTime();
       const endTime = new Date(end).getTime();
       const diffMs = endTime - startTime;
 
-      const diffHrs = Math.floor(diffMs / 3600000); // Convert milliseconds to hours
-      const diffMins = Math.floor((diffMs % 3600000) / 60000); // Convert remaining milliseconds to minutes
-      const diffSecs = Math.floor((diffMs % 60000) / 1000); // Convert remaining milliseconds to seconds
+      const diffHrs = String(Math.floor(diffMs / 3600000)).padStart(2, '0'); // Convertit en heures
+      const diffMins = String(Math.floor((diffMs % 3600000) / 60000)).padStart(2, '0'); // Convertit en minutes
+      const diffSecs = String(Math.floor((diffMs % 60000) / 1000)).padStart(2, '0'); // Convertit en secondes
 
-      return `${diffHrs}h ${diffMins}m ${diffSecs}s`;
+      return `${diffHrs}:${diffMins}:${diffSecs}`; // Retourne le format "hh:mm:ss"
     }
   },
-  mounted() {
+    mounted() {
     this.fetchUsers(); // Appeler la méthode pour récupérer les utilisateurs lors du montage du composant
   }
 };
