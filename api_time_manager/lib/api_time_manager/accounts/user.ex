@@ -8,6 +8,8 @@ defmodule ApiTimeManager.Accounts.User do
     field :hash_password, :string
     has_many :clocks, ApiTimeManager.Clocks.Clock
     has_many :workingtimes, ApiTimeManager.TimeManagement.Workingtime
+    many_to_many :roles, ApiTimeManager.Accounts.Role, join_through: "users_roles"
+
 
     timestamps()
   end
