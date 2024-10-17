@@ -1,19 +1,16 @@
-FROM elixir:1.14.5
+FROM elixir:latest
 
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt-get install -y nodejs
-
-WORKDIR /app
-
-COPY . .
+RUN mkdir /api_time_manager
+COPY . /api_time_manager
+WORKDIR /api_time_manager
 
 RUN mix local.hex --force && \
     mix local.rebar --force && \
-    mix deps.get && \
-    mix deps.compile && \
-    mix compile && \
-    mix release
+    mix deps.update --all
 
+RUN mix do compile
+
+# Expose port 4000
 EXPOSE 4000
 
-CMD ["mix", "ecto.reset" ]
+CMD ["bash", "entrypoint.sh"]
