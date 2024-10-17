@@ -9,11 +9,18 @@ defmodule ApiTimeManagerWeb.Router do
     pipe_through :api
 
     resources "/users", UserController, except: [:new, :edit]
+<<<<<<< HEAD
     resources "/workingtimes", WorkingTimeController, except: [:new, :edit]
+=======
+    resources "/workingtimes", WorkingtimeController, except: [:new, :edit]
+      post "/workingtimes/:userID", WorkingtimeController, :create_for_user
+      get "/workingtimes/:userID/:id", WorkingtimeController, :get_working_time_for_user
+      put "/workingtimes/:id", WorkingtimeController, :edit
+>>>>>>> ed97b3001893390fab2e6cb118e581f5cc07943c
 
     # Clock routes
-    get "/clocks/:userID", ClockController, :show_by_user
-    post "/clocks/:userID", ClockController, :create_for_user
+      get "/clocks/:userID", ClockController, :show_by_user
+      post "/clocks/:userID", ClockController, :create_for_user
   end
 
 
