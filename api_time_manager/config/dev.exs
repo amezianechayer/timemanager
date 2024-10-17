@@ -5,7 +5,11 @@ config :api_time_manager, ApiTimeManager.Repo,
   username: "postgres",
   password: "postgres",
   hostname: "db",
+<<<<<<< HEAD
   database: "api_time_manager_dev",
+=======
+  database: "timemanager_dev",
+>>>>>>> docker
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
@@ -19,13 +23,12 @@ config :api_time_manager, ApiTimeManager.Repo,
 config :api_time_manager, ApiTimeManagerWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}, port: 4000],
+  http: [ip: {0, 0, 0, 0}, port: 4000],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
   secret_key_base: "nwNQY5DGTXsdOkCM7Vcol8rXBND8ZnuDyV03CsOfeZ0UwJfSjnRaJKF0W2UjARI+",
   watchers: []
-
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed

@@ -11,15 +11,23 @@ defmodule ApiTimeManagerWeb.UserJSON do
   @doc """
   Renders a single user.
   """
-  def show(%{user: user}) do
-    %{data: data(user)}
+  def show(%{user: user, token: token}) do
+    %{data: data(user), token: token}
+  end
+
+  @doc """
+  Renders an error.
+  """
+  def error(%{error: error}) do
+    %{error: error}
   end
 
   defp data(%User{} = user) do
     %{
       id: user.id,
       username: user.username,
-      email: user.email
+      email: user.email,
+      hash_password: user.hash_password
     }
   end
 end

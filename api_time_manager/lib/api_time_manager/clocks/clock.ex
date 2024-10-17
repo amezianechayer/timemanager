@@ -4,7 +4,7 @@ defmodule ApiTimeManager.Clocks.Clock do
 
   schema "clocks" do
     field :status, :boolean, default: false
-    field :time, :naive_datetime
+    field :time, :string
     belongs_to :user, ApiTimeManager.Accounts.User
 
     timestamps(type: :utc_datetime)

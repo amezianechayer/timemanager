@@ -14,6 +14,7 @@ config :api_time_manager,
 # Configures the endpoint
 config :api_time_manager, ApiTimeManagerWeb.Endpoint,
   url: [host: "localhost"],
+  http: [port: 4000, ip: {0, 0, 0, 0}],  # Ajout de l'adresse IP 0.0.0.0
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
     formats: [json: ApiTimeManagerWeb.ErrorJSON],
@@ -21,6 +22,7 @@ config :api_time_manager, ApiTimeManagerWeb.Endpoint,
   ],
   pubsub_server: ApiTimeManager.PubSub,
   live_view: [signing_salt: "/D72y2oA"]
+
 
 # Configures the mailer
 #
@@ -30,6 +32,11 @@ config :api_time_manager, ApiTimeManagerWeb.Endpoint,
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
 config :api_time_manager, ApiTimeManager.Mailer, adapter: Swoosh.Adapters.Local
+
+config :api_time_manager, ApiTimeManager.Guardian,
+  issuer: "api_time_manager",
+  secret_key: "+1nY+ozAPV2NHonBit2nwciVsHJvfCG0cZyGt6t8ubYYXSkbMW3c1wg5qWAB/EGN"
+
 
 # Configures Elixir's Logger
 config :logger, :console,
