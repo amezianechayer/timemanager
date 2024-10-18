@@ -11,7 +11,6 @@
         La ville couvre environ 1 500 km², avec une population d'environ 10 millions d'habitants.
       </p>
 
-      <!-- Section Carte et Graphiques Population -->
       <div class="map-and-stats">
         <div class="map-container">
           <img src="@/assets/gotham.webp" alt="Carte de Gotham City" />
@@ -20,7 +19,6 @@
         <div class="population-stats">
           <h2>Démographie de la Population</h2>
 
-          <!-- Graphique Répartition par Âge -->
           <div class="chart-container">
             <h3>Répartition par Âge</h3>
             <canvas id="ageDistributionChart"></canvas>
