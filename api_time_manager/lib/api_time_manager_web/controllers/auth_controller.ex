@@ -23,12 +23,10 @@ defmodule ApiTimeManagerWeb.AuthController do
     end
   end
 
-  def login(conn, %{"email" => email, "password" => password}) do
-    # key_base = ApiTimeManagerWeb.Endpoint.config(:secret_key_base)
+  def login(conn, %{"user" => %{"email" => email, "password" => password}}) do
 
     case Auth.authenticate_user(email, password) do
       {:ok, user} ->
-        # token = Auth.generate_token(user)
         {:ok, token, _claims} = Guardian.encode_and_sign(user)
         IO.inspect(token)
         conn
