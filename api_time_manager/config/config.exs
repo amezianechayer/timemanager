@@ -21,6 +21,8 @@ config :api_time_manager, ApiTimeManagerWeb.Endpoint,
   ],
   pubsub_server: ApiTimeManager.PubSub,
   live_view: [signing_salt: "/D72y2oA"]
+  # Add this line
+
 
 # Configures the mailer
 #

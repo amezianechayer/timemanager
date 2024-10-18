@@ -9,6 +9,9 @@ defmodule ApiTimeManager.Accounts.Auth do
 
   alias ApiTimeManager.Repo
   alias ApiTimeManager.Accounts.{User, Role}
+  # alias ApiTimeManager.Clocks.Clock
+  # alias ApiTimeManager.TimeManagement.Workingtime
+
 
   @doc """
   Registers a new user with the given attributes.
@@ -30,7 +33,7 @@ defmodule ApiTimeManager.Accounts.Auth do
       iex> register_user(%{email: "invalid"})
       {:error, %Ecto.Changeset{}}
   """
-  def register_user(attrs \\ %{}) do
+  def register_user(attrs) do
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
@@ -39,7 +42,6 @@ defmodule ApiTimeManager.Accounts.Auth do
         default_role = Repo.get_by!(Role, name: "user")
         Repo.insert_all("users_roles", [%{
           user_id: user.id,
-          # role_id: 1,
           role_id: default_role.id,
           inserted_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second),
           updated_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
@@ -72,44 +74,22 @@ defmodule ApiTimeManager.Accounts.Auth do
   def authenticate_user(email, password) do
     user = Repo.get_by(User, email: email)
     |> Repo.preload(:roles)
+    |> Repo.preload(:clocks)
+    |> Repo.preload(:workingtimes)
 
     case user do
       nil ->
         Bcrypt.no_user_verify()
         {:error, :invalid_credentials}
       user ->
+        IO.inspect(user)
+        IO.inspect(password)
+        IO.inspect(user.hash_password)
         if Bcrypt.verify_pass(password, user.hash_password) do
           {:ok, user}
         else
           {:error, :invalid_credentials}
         end
     end
-  end
-
-  @doc """
-  Generates an authentication token for a user.
-
-  ## Parameters
-    * user - User struct with preloaded roles
-
-  ## Returns
-    * String - JWT token containing user ID and roles
-
-  ## Examples
-      iex> user = %User{id: 1, roles: [%Role{name: "user"}]}
-      iex> generate_token(user)
-      "eyJhbGciOiJIUzI1NiIs..."
-
-  Note: Make sure the user struct has roles preloaded before calling this function.
-  """
-  def generate_token(user) do
-    roles = Enum.map(user.roles, & &1.name)
-    user = Repo.preload(user, :roles)
-
-    Phoenix.Token.sign(
-      ApiTimeManager.Endpoint,  # Note: Vous devriez changer ceci pour ApiTimeManagerWeb.Endpoint
-      "user auth",
-      %{user_id: user.id, roles: roles}
-    )
   end
 end

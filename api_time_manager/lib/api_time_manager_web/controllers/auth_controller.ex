@@ -1,20 +1,20 @@
 defmodule ApiTimeManagerWeb.AuthController do
   use ApiTimeManagerWeb, :controller
 
-  # alias ApiTimeManager.Auth
   alias ApiTimeManager.Accounts.Auth
+  alias ApiTimeManager.Guardian
 
   action_fallback ApiTimeManagerWeb.FallbackController
 
-  # ! Reprendre le register
   def register(conn, %{"user" => user_params}) do
+
     case Auth.register_user(user_params) do
       {:ok, user} ->
+        # if uncomment this line, also uncomment line 10 of \lib\api_time_manager_web\controllers\auth_json.ex
         # token = Auth.generate_token(user)
         conn
         |> put_status(:created)
         |> render(:register, %{user: user})
-        # |> render(:show, %{user: user, token: token})
 
       {:error, changeset} ->
         conn
@@ -24,13 +24,16 @@ defmodule ApiTimeManagerWeb.AuthController do
   end
 
   def login(conn, %{"email" => email, "password" => password}) do
+    # key_base = ApiTimeManagerWeb.Endpoint.config(:secret_key_base)
+
     case Auth.authenticate_user(email, password) do
       {:ok, user} ->
-        token = Auth.generate_token(user)
+        # token = Auth.generate_token(user)
+        {:ok, token, _claims} = Guardian.encode_and_sign(user)
+        IO.inspect(token)
         conn
         |> put_status(:ok)
-        # |> render("login.json", %{user: user, token: token})
-        |> render(:show, %{user: user, token: token})
+        |> render(:login, %{user: user, token: token})
 
       {:error, :invalid_credentials} ->
         conn

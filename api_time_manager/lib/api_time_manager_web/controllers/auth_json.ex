@@ -75,19 +75,4 @@ defmodule ApiTimeManagerWeb.AuthJSON do
       String.replace(acc, "%{#{key}}", fn _ -> to_string(value) end)
     end)
   end
-
-  # @doc """
-  # Renders a single user.
-  # """
-  # def show(%{user: user}) do
-  #   %{data: data(user)}
-  # end
-
-  # defp data(%User{} = user) do
-  #   %{
-  #     id: user.id,
-  #     username: user.username,
-  #     email: user.email,
-  #   }
-  # end
 end
