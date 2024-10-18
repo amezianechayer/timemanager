@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import HeuresChart from '../components/HeuresChart.vue';
+import HeuresChart from '../../components/HeuresChart.vue';
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import axios from 'axios';
 

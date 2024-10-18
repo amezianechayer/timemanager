@@ -4,7 +4,7 @@ defmodule ApiTimeManager.Clocks.Clock do
 
   schema "clocks" do
     field :status, :boolean, default: false
-    field :time, :naive_datetime
+    field :time, :string
     belongs_to :user, ApiTimeManager.Accounts.User
 
     timestamps(type: :utc_datetime)
@@ -13,7 +13,7 @@ defmodule ApiTimeManager.Clocks.Clock do
   @doc false
   def changeset(clock, attrs) do
     clock
-    |> cast(attrs, [:time, :status, :user_id])
+    |> cast(attrs, [:time, :status, :user_id, :inserted_at])
     |> validate_required([:time, :status, :user_id])
     |> foreign_key_constraint(:user_id)
   end
