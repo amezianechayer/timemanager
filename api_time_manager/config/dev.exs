@@ -5,7 +5,7 @@ config :api_time_manager, ApiTimeManager.Repo,
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
-  database: "timemanager_dev",
+  database: "api_time_manager_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10

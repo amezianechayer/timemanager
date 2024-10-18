@@ -104,4 +104,13 @@ defmodule ApiTimeManager.Accounts do
   def get_user_by_email(email) do
     Repo.get_by(User, email: email)
   end
+
+  def authenticate_user(email, password) do
+    user = Repo.get_by(User, email: email)
+
+    case user do
+      nil -> {:error, :invalid_credentials}
+      user -> if Bcrypt.verify_pass(password, user.hash_password), do: {:ok, user}, else: {:error, :invalid_credentials}
+    end
+  end
 end

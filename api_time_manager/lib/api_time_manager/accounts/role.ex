@@ -6,7 +6,7 @@ defmodule ApiTimeManager.Accounts.Role do
     field :name, :string
     many_to_many :users, ApiTimeManager.Accounts.User, join_through: "users_roles"
 
-    timestamps(type: :utc_datetime)
+    # timestamps(type: :utc_datetime)
   end
 
   @doc false
