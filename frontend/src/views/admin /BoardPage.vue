@@ -3,15 +3,19 @@
   <div class="hours-tracking-container">
     <h1>Suivi des Heures - Arkham Tracker</h1>
 
-
     <div class="filter-container">
-      <label for="user-select" class="text-black">Filtrer par employé : </label>
+      <label for="user-select" class="text-white">Filtrer par employé : </label>
       <select id="user-select" v-model="selectedUser" @change="filterEmployees">
         <option value="all">Tous les utilisateurs</option>
         <option v-for="employee in employees" :key="employee.id" :value="employee.id">
           {{ employee.username }}
         </option>
       </select>
+    </div>
+
+    <div class="filter-container">
+      <label for="date-select" class="text-white">Filtrer par date d'insertion : </label>
+      <input type="date" id="date-select" v-model="selectedDate" @change="filterEmployees">
     </div>
 
     <table>
@@ -38,7 +42,7 @@
       </tbody>
     </table>
 
-
+    <!-- Popup pour ajouter des heures requises -->
     <div v-if="showPopup" class="popup">
       <div class="popup-content">
         <h2>Ajouter des heures requises pour {{ selectedEmployee.username }}</h2>
@@ -68,6 +72,7 @@ export default {
     return {
       employees: [], // Liste des utilisateurs récupérée depuis l'API
       selectedUser: 'all', // Par défaut, on affiche tous les utilisateurs
+      selectedDate: '', // Date de début pour le tri
       filteredEmployees: [], // Liste filtrée d'utilisateurs
       showPopup: false, // Contrôle l'affichage de la popup
       selectedEmployee: null, // Stocke l'employé sélectionné
@@ -126,11 +131,18 @@ export default {
       return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`; // Format HH:MM:SS
     },
     filterEmployees() {
-      if (this.selectedUser === 'all') {
-        this.filteredEmployees = this.employees; // Affiche tous les utilisateurs si "Tous les utilisateurs" est sélectionné
-      } else {
-        this.filteredEmployees = this.employees.filter(employee => employee.id === parseInt(this.selectedUser)); // Filtre par l'utilisateur sélectionné
+      let filtered = this.employees;
+
+      if (this.selectedUser !== 'all') {
+        filtered = filtered.filter(employee => employee.id === parseInt(this.selectedUser));
       }
+
+      if (this.selectedDate) {
+        const selectedDateTime = new Date(this.selectedDate).getTime();
+        filtered = filtered.filter(employee => new Date(employee.inserted_at).getTime() >= selectedDateTime);
+      }
+
+      this.filteredEmployees = filtered;
     },
     isOverdue(employee) {
       return employee.totalHours < employee.hoursRequired; // Détermine si l'employé est en retard
@@ -156,6 +168,8 @@ export default {
 </script>
 
 <style scoped>
+
+
 .hours-tracking-container {
   padding: 20px;
   background-color: #1d1d1d;
@@ -172,7 +186,7 @@ h1 {
   text-align: center;
 }
 
-select {
+select, input[type="date"] {
   padding: 5px;
   font-size: 1rem;
   background-color: #282828;
@@ -186,11 +200,11 @@ select option {
   color: #f5f5f5;
 }
 
-select:hover {
+select:hover, input[type="date"]:hover {
   background-color: #333;
 }
 
-select:focus {
+select:focus, input[type="date"]:focus {
   outline: none;
   border-color: #555;
 }

@@ -13,7 +13,7 @@ defmodule ApiTimeManager.Clocks.Clock do
   @doc false
   def changeset(clock, attrs) do
     clock
-    |> cast(attrs, [:time, :status, :user_id])
+    |> cast(attrs, [:time, :status, :user_id, :inserted_at])
     |> validate_required([:time, :status, :user_id])
     |> foreign_key_constraint(:user_id)
   end

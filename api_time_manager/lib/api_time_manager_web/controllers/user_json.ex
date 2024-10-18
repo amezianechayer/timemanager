@@ -25,9 +25,12 @@ defmodule ApiTimeManagerWeb.UserJSON do
   @doc """
   Renders a single user.
   """
-  def show(%{user: user, token: token}) do
-    %{data: data(user), token: token}
+
+  #SUPPRESION DU TOKEN POUR LA ROUTE GET /api/users/:id
+  def show(%{user: user}) do
+    %{data: data(user)}
   end
+  #SUPPRESION DU TOKEN POUR LA ROUTE GET /api/users/:id
 
   @doc """
   Renders an error.
