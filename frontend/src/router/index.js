@@ -45,6 +45,11 @@ const routes = [
         path: '/profil',
         component: () => import('@/views/admin /ProfilPage.vue'),
         meta: { requiresAuth: true }
+    },
+    {
+        path: '/organisation',
+        component: () => import('@/views/admin /OrganisationPage.vue'),
+        meta: { requiresAuth: true }
     }
 
 ];

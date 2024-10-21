@@ -13,10 +13,11 @@
         <router-link to="/moderation" class="hover:underline p-2">Moderation</router-link>
         <router-link to="/board" class="hover:underline p-2">Board</router-link>
         <router-link to="/chart" class="hover:underline p-2">Chart</router-link>
+        <router-link to="/organisation">Organisation</router-link>
         <router-link to="/profil">
+
           <img src="@/assets/profil.png" alt="Arkham Tracker Logo" class="w-16 h-16">
         </router-link>
-
       </div>
 
       <button @click="logout" class="logout-button">
@@ -66,19 +67,15 @@ nav a {
 }
 
 button.logout-button {
-  background-color: blue;
-  color: black;
-  font-size: 2xl; /* Same as the categories in the navbar */
+  background-color: #6FABEB;
+  color: white;
+  font-size: 2xl;
   font-weight: bold;
-  padding: 4px;
-  border-radius: xl;
+  padding: 15px;
+  border-radius: 10px;
   z-index: 10;
-}
 
-button.logout-button:hover {
-  background-color: #; /* Darker blue for hover effect */
 }
-
 img {
   object-fit: contain; /* Garde la proportion de l'image */
 }

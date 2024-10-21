@@ -55,7 +55,7 @@ export default {
       }
 
       try {
-        const { data } = await axios.post('http://localhost:4000/api/users/login', {
+        const { data } = await axios.post('http://localhost:4000/api/login', {
           user: {
             email: email.value,
             password: hash_password.value
