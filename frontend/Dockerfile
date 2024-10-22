@@ -1,6 +1,6 @@
 FROM node:20-alpine
 
-WORKDIR /frontend
+WORKDIR /usr/src/frontend
 
 COPY package*.json ./
 
@@ -14,7 +14,7 @@ RUN npm install npm@latest -g
 # RUN npm install --production
 RUN npm install
 
-COPY . .
+COPY . /usr/src/frontend
 
 EXPOSE 8080
 
