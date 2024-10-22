@@ -8,6 +8,9 @@ export default function Index() {
       <Link href="/login" style={styles.button}>
         Aller à la page à propos
       </Link>
+      <Link href="/working-time" style={styles.button}>
+        Aller à la liste des activités
+      </Link>
       <Link
         href={{
           pathname: '/details/[id]',

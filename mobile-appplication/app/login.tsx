@@ -1,9 +1,8 @@
 import * as React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { TextInput, Button, Card } from "react-native-paper";
-import { Link } from "expo-router";
 
-export default function LoginScreen() {
+export default function Login() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
