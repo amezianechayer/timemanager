@@ -6,7 +6,10 @@ defmodule ApiTimeManagerWeb.UserJSON do
   Renders a list of users.
   """
   def index(%{users: users}) do
-    %{data: for(user <- users, do: data(user))}
+    %{
+      status: :success,
+      data: for(user <- users, do: data(user))
+    }
   end
 
   @doc """

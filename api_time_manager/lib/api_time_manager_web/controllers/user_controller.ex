@@ -13,7 +13,6 @@ defmodule ApiTimeManagerWeb.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    # claims = %{roles: user_roles}
     user = Accounts.get_user!(id)
     render(conn, :show, user: user)
   end
@@ -36,7 +35,6 @@ defmodule ApiTimeManagerWeb.UserController do
 
   def get_current_user(conn, _params) do
     user_id = conn.assigns[:current_user_id]
-    IO.inspect(user_id)
     user = Accounts.get_user!(user_id)
     render(conn, :show, user: user)
   end

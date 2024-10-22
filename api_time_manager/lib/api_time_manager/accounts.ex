@@ -34,7 +34,7 @@ defmodule ApiTimeManager.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user!(id), do: Repo.get!(User, id) |> Repo.preload(:roles)
 
   @doc """
   Creates a user.
