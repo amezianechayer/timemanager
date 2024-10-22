@@ -17,7 +17,7 @@ defmodule ApiTimeManagerWeb.Router do
     plug ApiTimeManagerWeb.Plugs.AuthPlug, ["admin"]
   end
 
-  # Public routes
+    # Public routes
   scope "/api", ApiTimeManagerWeb do
     pipe_through :api
 
@@ -28,7 +28,6 @@ defmodule ApiTimeManagerWeb.Router do
   scope "/api", ApiTimeManagerWeb do
     pipe_through [:api, :authenticate]
 
-    # resources "/users", UserController, except: [:new, :edit]
     get "/users/me", UserController, :get_current_user
     put "/users/me", UserController, :update_current_user
     delete "/users/me", UserController, :delete_current_user
@@ -38,7 +37,6 @@ defmodule ApiTimeManagerWeb.Router do
     post "/workingtimes/:userID", WorkingtimeController, :create_for_user
     get "/workingtimes/:userID/:id", WorkingtimeController, :get_working_time_for_user
 
-    # put "/workingtimes/:id", WorkingtimeController, :edit
     # Clock Routes
     get "/clocks", ClockController, :index
     get "/clocks/:userID", ClockController, :show_by_user
@@ -49,8 +47,9 @@ defmodule ApiTimeManagerWeb.Router do
       pipe_through [:require_admin]
 
       # Manage users
+      get "/users", UserController, :fetch_users
       resources "/users", UserController, except: [:new, :edit]
-      put "/users/:userID", UserController, :update
+      # get "/users", UserController, :index
 
       # Promote user
       # post "/promote/:userID", PromoteController, :promote_user

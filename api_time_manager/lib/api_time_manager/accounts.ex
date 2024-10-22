@@ -100,34 +100,19 @@ defmodule ApiTimeManager.Accounts do
     User.changeset(user, attrs)
   end
 
-  def get_user_by_email(email) do
-    Repo.get_by(User, email: email)
+  def list_users_filtered(nil, nil) do
+    Repo.all(User) |> Repo.preload(:roles)
   end
 
+  def list_users_filtered(email, nil) do
+    Repo.all(from u in User, where: u.email == ^email) |> Repo.preload(:roles)
+  end
 
+  def list_users_filtered(nil, username) do
+    Repo.all(from u in User, where: u.username == ^username) |> Repo.preload(:roles)
+  end
 
-  # def authenticate_user(email, password) do
-  #   user = Repo.get_by(User, email: email)
-
-  #   case user do
-  #     nil -> {:error, :invalid_credentials}
-  #     user -> if Bcrypt.verify_pass(password, user.hash_password), do: {:ok, user}, else: {:error, :invalid_credentials}
-  #   end
-  # end
-
-
-  # def promote_user(%User{} = user) do
-  #   new_role_id = next_role(user.role)
-
-  #   user
-  #   |> User.changeset(%{role_id: new_role_id})
-  #   |> Repo.update()
-  # end
-
-  # defp next_role(current_role_id) do
-  #   case current_role_id do
-  #     1 -> 2 # User -> Manager
-  #     2 -> 3 # Manager -> Admin
-  #   end
-  # end
+  def list_users_filtered(email, username) do
+    Repo.all(from u in User, where: u.email == ^email and u.username == ^username) |> Repo.preload(:roles)
+  end
 end
