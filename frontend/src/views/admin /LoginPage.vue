@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <img src="@/assets/fondEcran.webp" alt="Arkham Tracker Logo" class="background-image">
+    <img src="../../assets/fondEcran.webp" alt="Arkham Tracker Logo" class="background-image">
     <div class="overlay"></div>
     <h1 class="text-6xl font-bold leading-none mr-10">
       <span class="block text-white">Arkham</span>
@@ -8,7 +8,7 @@
     </h1>
 
     <div class="login-card">
-      <img src="@/assets/iconeApp.webp" alt="Arkham Tracker Logo" class="h-24 w-24 rounded-2xl mx-auto mb-2">
+      <img src="../../assets/iconeApp.webp" alt="Arkham Tracker Logo" class="h-24 w-24 rounded-2xl mx-auto mb-2">
 
       <form @submit.prevent="handleLogin">
         <div class="form-group">
@@ -55,7 +55,7 @@ export default {
       }
 
       try {
-        const { data } = await axios.post('http://localhost:4000/api/users/login', {
+        const { data } = await axios.post('http://localhost:4000/api/login', {
           user: {
             email: email.value,
             password: hash_password.value

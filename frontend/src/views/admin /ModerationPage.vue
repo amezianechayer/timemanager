@@ -10,6 +10,7 @@
         <th>Début de la journée</th>
         <th>Fin de journée</th>
         <th>Temps travaillé aujourd'hui</th>
+        <th>Droit utilisateur</th>
       </tr>
       </thead>
       <tbody>

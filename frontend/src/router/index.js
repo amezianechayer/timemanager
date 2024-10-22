@@ -4,43 +4,54 @@ const routes = [
     {
         path: '/home',
         name: 'Home',
-        component: () => import("@/views/HomePage.vue"),
+        component: () => import("@/views/admin /HomePage.vue"),
         meta: { requiresAuth: true }
     },
     {
         path: '/about',
         name: 'About',
-        component: () => import("@/views/AboutPage.vue"),
+        component: () => import("@/views/admin /AboutPage.vue"),
         meta: { requiresAuth: true }
     },
     {
         path: '/',
         name: 'Login',
-        component: () => import("@/views/LoginPage.vue")
+        component: () => import("@/views/admin /LoginPage.vue")
     },
     {
         path: '/moderation',
         name: 'Moderation',
-        component: () => import("@/views/ModerationPage.vue"),
+        component: () => import("@/views/admin /ModerationPage.vue"),
         meta: { requiresAuth: true }
     },
     {
         path: '/board',
         name: 'board',
-        component: () => import("@/views/BoardPage.vue"),
+        component: () => import("@/views/admin /BoardPage.vue"),
         meta: { requiresAuth: true }
     },
     {
         path: '/chart',
         name: 'chart',
-        component: () => import("@/views/ChartHours.vue"),
+        component: () => import("@/views/admin /ChartHours.vue"),
         meta: { requiresAuth: true }
     },
     {
         path: '/register',
         name: 'register',
-        component: () => import("@/views/RegisterPage.vue")
+        component: () => import("@/views/admin /RegisterPage.vue")
     },
+    {
+        path: '/profil',
+        component: () => import('@/views/admin /ProfilPage.vue'),
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/organisation',
+        component: () => import('@/views/admin /OrganisationPage.vue'),
+        meta: { requiresAuth: true }
+    }
+
 ];
 
 const router = createRouter({
