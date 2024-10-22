@@ -35,3 +35,4 @@ defmodule ApiTimeManagerWeb.Router do
     end
   end
 end
+

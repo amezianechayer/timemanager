@@ -49,3 +49,4 @@ defmodule ApiTimeManagerWeb.UserJSON do
     }
   end
 end
+
