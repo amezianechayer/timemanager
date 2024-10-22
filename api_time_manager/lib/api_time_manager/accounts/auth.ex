@@ -82,9 +82,6 @@ defmodule ApiTimeManager.Accounts.Auth do
         Bcrypt.no_user_verify()
         {:error, :invalid_credentials}
       user ->
-        IO.inspect(user)
-        IO.inspect(password)
-        IO.inspect(user.hash_password)
         if Bcrypt.verify_pass(password, user.hash_password) do
           {:ok, user}
         else

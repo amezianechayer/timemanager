@@ -24,11 +24,11 @@ defmodule ApiTimeManagerWeb.AuthController do
   end
 
   def login(conn, %{"user" => %{"email" => email, "password" => password}}) do
-
     case Auth.authenticate_user(email, password) do
       {:ok, user} ->
-        {:ok, token, _claims} = Guardian.encode_and_sign(user)
-        IO.inspect(token)
+        user_roles = user.roles |> Enum.map(& &1.name)
+        claims = %{roles: user_roles}
+        {:ok, token, _claims} = Guardian.encode_and_sign(user, claims)
         conn
         |> put_status(:ok)
         |> render(:login, %{user: user, token: token})

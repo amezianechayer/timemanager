@@ -11,6 +11,7 @@ defmodule ApiTimeManager.Guardian do
     id = claims["sub"]
     user = Accounts.get_user!(id)
     {:ok, user}
+
   rescue
     Ecto.NoResultsError -> {:error, :resource_not_found}
   end

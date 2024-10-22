@@ -40,7 +40,6 @@ defmodule ApiTimeManager.Accounts do
   Creates a user.
 
   ## Examples
-
       iex> create_user(%{field: value})
       {:ok, %User{}}
 
@@ -105,12 +104,28 @@ defmodule ApiTimeManager.Accounts do
     Repo.get_by(User, email: email)
   end
 
-  def authenticate_user(email, password) do
-    user = Repo.get_by(User, email: email)
+  # def authenticate_user(email, password) do
+  #   user = Repo.get_by(User, email: email)
 
-    case user do
-      nil -> {:error, :invalid_credentials}
-      user -> if Bcrypt.verify_pass(password, user.hash_password), do: {:ok, user}, else: {:error, :invalid_credentials}
-    end
-  end
+  #   case user do
+  #     nil -> {:error, :invalid_credentials}
+  #     user -> if Bcrypt.verify_pass(password, user.hash_password), do: {:ok, user}, else: {:error, :invalid_credentials}
+  #   end
+  # end
+
+
+  # def promote_user(%User{} = user) do
+  #   new_role_id = next_role(user.role)
+
+  #   user
+  #   |> User.changeset(%{role_id: new_role_id})
+  #   |> Repo.update()
+  # end
+
+  # defp next_role(current_role_id) do
+  #   case current_role_id do
+  #     1 -> 2 # User -> Manager
+  #     2 -> 3 # Manager -> Admin
+  #   end
+  # end
 end
