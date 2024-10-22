@@ -6,15 +6,15 @@ defmodule ApiTimeManagerWeb.Router do
   end
 
   pipeline :authenticate do
-    plug ApiTimeManagerWeb.Plugs.AuthPlug, ["user"]
+    plug ApiTimeManagerWeb.Plugs.AuthPlug, ["user", "manager","admin"]
+  end
+
+  pipeline :require_manager do
+    plug ApiTimeManagerWeb.Plugs.AuthPlug, ["manager", "admin"]
   end
 
   pipeline :require_admin do
     plug ApiTimeManagerWeb.Plugs.AuthPlug, ["admin"]
-  end
-
-  pipeline :require_manager do
-    plug ApiTimeManagerWeb.Plugs.AuthPlug, ["admin", "manager"]
   end
 
   # Public routes
@@ -31,6 +31,7 @@ defmodule ApiTimeManagerWeb.Router do
     # resources "/users", UserController, except: [:new, :edit]
     get "/users/me", UserController, :get_current_user
     put "/users/me", UserController, :update_current_user
+    delete "/users/me", UserController, :delete_current_user
 
     # Working Time Routes
     resources "/workingtimes", WorkingtimeController, except: [:new, :edit]
@@ -49,6 +50,7 @@ defmodule ApiTimeManagerWeb.Router do
 
       # Manage users
       resources "/users", UserController, except: [:new, :edit]
+      put "/users/:userID", UserController, :update
 
       # Promote user
       # post "/promote/:userID", PromoteController, :promote_user

@@ -6,7 +6,7 @@ defmodule ApiTimeManagerWeb.AuthJSON do
     %{
       status: :success,
       data: %{
-        user: user_json(user)
+        user: data(user)
         # token: token
       }
     }
@@ -19,7 +19,7 @@ defmodule ApiTimeManagerWeb.AuthJSON do
     %{
       status: :success,
       data: %{
-        user: user_json(user),
+        user: data(user),
         token: token
       }
     }
@@ -44,7 +44,7 @@ defmodule ApiTimeManagerWeb.AuthJSON do
     }
   end
 
-  defp user_json(user) do
+  defp data(user) do
     %{
       id: user.id,
       email: user.email,

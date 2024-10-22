@@ -10,8 +10,8 @@ defmodule ApiTimeManagerWeb.Plugs.AuthPlug do
     with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
     {:ok, claims} <- verify_token(token),
       true <- has_required_role?(claims["roles"], roles) do
-        # IO.inspect(claims["sub"])
         assign(conn, :current_user_id, claims["sub"])
+        assign(conn, :current_user_role, claims["roles"])
     else
       _ ->
         conn
