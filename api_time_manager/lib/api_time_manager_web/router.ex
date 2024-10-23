@@ -28,6 +28,7 @@ defmodule ApiTimeManagerWeb.Router do
   scope "/api", ApiTimeManagerWeb do
     pipe_through [:api, :authenticate]
 
+    # User Routes
     get "/users/me", UserController, :get_current_user
     put "/users/me", UserController, :update_current_user
     delete "/users/me", UserController, :delete_current_user
@@ -54,10 +55,9 @@ defmodule ApiTimeManagerWeb.Router do
       get "/clocks", ClockController, :index
       get "/clocks/:userID", ClockController, :show_by_user
 
-
       # Promote user
-      # post "/promote/:userID", PromoteController, :promote_user
-
+      post "/promote/:userID", PromoteController, :promote_user_to_manager
+      post "/demote/:userID", PromoteController, :demote_manager_to_user
     end
 
     # Route accessible aux managers et admins

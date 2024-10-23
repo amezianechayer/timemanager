@@ -5,7 +5,7 @@ defmodule ApiTimeManager.Accounts do
 
   import Ecto.Query, warn: false
   alias ApiTimeManager.Repo
-  alias ApiTimeManager.Accounts.User
+  alias ApiTimeManager.Accounts.{User, Role, UsersRoles}
 
   @doc """
   Returns the list of users.
@@ -115,4 +115,51 @@ defmodule ApiTimeManager.Accounts do
   def list_users_filtered(email, username) do
     Repo.all(from u in User, where: u.email == ^email and u.username == ^username) |> Repo.preload(:roles)
   end
+
+  def promote_user(user_id) do
+    user = Repo.get!(User, user_id) |> Repo.preload(:roles)
+    role_user = Repo.get_by!(Role, name: "user")
+
+    if user.roles && role_user.id in Enum.map(user.roles, & &1.id) do
+      role_manager = Repo.get_by!(Role, name: "manager")
+
+      Ecto.Multi.new()
+      |> Ecto.Multi.delete_all(:delete_old_role,
+            from(ur in "users_roles",
+            where: ur.user_id == ^user.id and ur.role_id == ^role_user.id))
+      |> Ecto.Multi.insert(:insert_new_role,
+            %UsersRoles{
+              user_id: user.id,
+              role_id: role_manager.id
+            }
+            |> UsersRoles.changeset(%{}))
+      |> Repo.transaction()
+    else
+      {:error, "User does not have the 'user' role"}
+    end
+  end
+
+  def demote_user(user_id) do
+    user = Repo.get!(User, user_id) |> Repo.preload(:roles)
+    role_manager = Repo.get_by!(Role, name: "manager")
+
+    if user.roles && role_manager.id in Enum.map(user.roles, & &1.id) do
+      role_user = Repo.get_by!(Role, name: "user")
+
+      Ecto.Multi.new()
+      |> Ecto.Multi.delete_all(:delete_old_role,
+            from(ur in "users_roles",
+            where: ur.user_id == ^user.id and ur.role_id == ^role_manager.id))
+      |> Ecto.Multi.insert(:insert_new_role,
+            %UsersRoles{
+              user_id: user.id,
+              role_id: role_user.id
+            }
+            |> UsersRoles.changeset(%{}))
+      |> Repo.transaction()
+    else
+      {:error, "User does not have the 'manager' role"}
+    end
+  end
+
 end
