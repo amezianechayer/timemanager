@@ -1,7 +1,4 @@
 defmodule ApiTimeManagerWeb.UserJSON do
-  # alias ApiTimeManager.Accounts.User
-  # alias ApiTimeManager.Accounts.Role
-
   @doc """
   Renders a list of users.
   """

@@ -1,28 +1,39 @@
-# defmodule ApiTimeManagerWeb.PromoteController do
-#   use ApiTimeManagerWeb, :controller
+defmodule ApiTimeManagerWeb.PromoteController do
+  use ApiTimeManagerWeb, :controller
 
-#   alias ApiTimeManager.Accounts
-#   alias ApiTimeManager.Accounts.User
+  alias ApiTimeManager.Accounts
 
-#   action_fallback ApiTimeManagerWeb.FallbackController
+  action_fallback ApiTimeManagerWeb.FallbackController
 
-#   def promote_user(conn, %{"userID" => user_id}) do
-#     user_id
-#     |> Accounts.get_user!()
-#     |> promote_to_manager(conn)
-#   end
+  # def promote_user_to_manager(conn, %{"userID" => user_id}) do
+  #   user = Accounts.get_user!(user_id)
 
-#   defp promote_to_manager(%User{} = user, conn) do
-#     case Accounts.promote_user(user) do
-#       {:ok, updated_user} ->
-#         conn
-#         |> put_status(:ok)
-#         |> json(%{message: "User promoted successfully", user: updated_user})
+  #   with {:ok, %User{} = updated_user} <- Accounts.promote_user(2) do
+  #     render(conn, :promote, user: updated_user)
+  #   end
+  # end
 
-#       {:error, reason} ->
-#         conn
-#         |> put_status(:unprocessable_entity)
-#         |> json(%{error: "Failed to promote user", reason: reason})
-#     end
-#   end
-# end
+  def promote_user_to_manager(conn, %{"userID" => user_id}) do
+    case Accounts.promote_user(user_id) do
+      {:ok, _result} ->
+        json(conn, %{status: :success, message: "User promoted to manager successfully."})
+
+      {:error, reason} ->
+        conn
+        |> put_status(:bad_request)
+        |> json(%{status: :error, message: reason})
+    end
+  end
+
+  def demote_manager_to_user(conn, %{"userID" => user_id}) do
+    case Accounts.demote_user(user_id) do
+      {:ok, _result} ->
+        json(conn, %{status: :success, message: "Manager demoted to user successfully."})
+
+      {:error, reason} ->
+        conn
+        |> put_status(:bad_request)
+        |> json(%{status: :error, message: reason})
+    end
+  end
+end
