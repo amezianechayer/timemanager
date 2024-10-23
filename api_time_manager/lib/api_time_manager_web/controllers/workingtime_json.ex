@@ -24,7 +24,7 @@ defmodule ApiTimeManagerWeb.WorkingtimeJSON do
     %{error: error}
   end
 
-  # This function is called for each workingtime. If it's a valid Workingtime struct, it will render the correct data.
+  # defp data(%Workingtime{} = workingtime) do
   defp data(%Workingtime{} = workingtime) do
     %{
       id: workingtime.id,

@@ -42,8 +42,6 @@ defmodule ApiTimeManagerWeb.Router do
     post "/workingtimes", WorkingtimeController, :create_for_authenticated_user
     put "/workingtimes/:id", WorkingtimeController, :update_for_authenticated_user
 
-
-
     # Accessible route only from admins users
     scope "/admin" do
       pipe_through [:require_admin]
@@ -58,10 +56,12 @@ defmodule ApiTimeManagerWeb.Router do
       get "/clocks/:userID", ClockController, :show_by_user
 
       # Manage workingtimes
-      resources "/workingtimes", WorkingtimeController, except: [:new, :edit]
       post "/workingtimes/:userID", WorkingtimeController, :create_for_user
-      get "/workingtimes/:userID/:id", WorkingtimeController, :get_working_time_for_user
-      get "/workingtimes/:userID/:id", WorkingtimeController, :get_working_time_for_user
+      get "/workingtimes", WorkingtimeController, :index
+      get "/workingtimes/:userID", WorkingtimeController, :admin_get_working_times
+      get "/workingtimes/:userID/:id", WorkingtimeController, :admin_get_working_time
+      put "/workingtimes/:userID/:id", WorkingtimeController, :update_for_authenticated_user
+      delete "/workingtimes/:userID/:id", WorkingtimeController, :delete
 
       # Promote user
       post "/promote/:userID", PromoteController, :promote_user_to_manager
