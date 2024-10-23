@@ -5,11 +5,11 @@ config :api_time_manager, ApiTimeManager.Repo,
   username: "postgres",
   password: "postgres",
   hostname: "db",
-<<<<<<< HEAD
+
   database: "api_time_manager_dev",
-=======
+
   database: "timemanager_dev",
->>>>>>> docker
+
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
