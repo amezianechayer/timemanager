@@ -1,5 +1,7 @@
-import { Text, View, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
+import { Text, View, StyleSheet } from "react-native";
+import { Link } from "expo-router";
+
+import Button from "@/components/Btn";
 
 export default function Index() {
   return (
@@ -13,28 +15,40 @@ export default function Index() {
       </Link>
       <Link
         href={{
-          pathname: '/details/[id]',
-          params: { id: 'bacon' },
-        }}>
+          pathname: "/details/[id]",
+          params: { id: "bacon" },
+        }}
+      >
         View user details
       </Link>
+      <View style={styles.footerContainer}>
+        <Button theme="primary" label="Pointage" />
+        <Button theme="primary" label="Historique" />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#25292e',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "column",
+    flex: 3,
+    backgroundColor: "#25292e",
+    alignItems: "center",
+    justifyContent: "center",
   },
   text: {
-    color: '#fff',
+    color: "#fff",
   },
   button: {
     fontSize: 20,
-    textDecorationLine: 'underline',
-    color: '#fff',
+    textDecorationLine: "underline",
+    color: "#fff",
+  },
+  footerContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    marginBottom: 40,
   },
 });
