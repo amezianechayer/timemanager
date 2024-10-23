@@ -38,11 +38,13 @@ defmodule ApiTimeManagerWeb.Router do
     get "/clocks", ClockController, :show_for_authenticated_user
 
     # Working Time Routes
-    resources "/workingtimes", WorkingtimeController, except: [:new, :edit]
-    post "/workingtimes/:userID", WorkingtimeController, :create_for_user
-    get "/workingtimes/:userID/:id", WorkingtimeController, :get_working_time_for_user
+    get "/workingtimes", WorkingtimeController, :user_get_working_times
+    post "/workingtimes", WorkingtimeController, :create_for_authenticated_user
+    put "/workingtimes/:id", WorkingtimeController, :update_for_authenticated_user
 
-    # Route accessible uniquement aux admins
+
+
+    # Accessible route only from admins users
     scope "/admin" do
       pipe_through [:require_admin]
 
@@ -55,14 +57,21 @@ defmodule ApiTimeManagerWeb.Router do
       get "/clocks", ClockController, :index
       get "/clocks/:userID", ClockController, :show_by_user
 
+      # Manage workingtimes
+      resources "/workingtimes", WorkingtimeController, except: [:new, :edit]
+      post "/workingtimes/:userID", WorkingtimeController, :create_for_user
+      get "/workingtimes/:userID/:id", WorkingtimeController, :get_working_time_for_user
+      get "/workingtimes/:userID/:id", WorkingtimeController, :get_working_time_for_user
+
       # Promote user
       post "/promote/:userID", PromoteController, :promote_user_to_manager
       post "/demote/:userID", PromoteController, :demote_manager_to_user
     end
 
-    # Route accessible aux managers et admins
+    # Accessible route only from managers and admins
     scope "/manager" do
       pipe_through [:require_manager]
+
     end
   end
 
@@ -79,8 +88,3 @@ defmodule ApiTimeManagerWeb.Router do
     end
   end
 end
-
-
-# UPDATE users_roles
-# SET user_id = 3, role_id = 3
-# WHERE id = 2;

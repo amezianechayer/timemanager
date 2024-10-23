@@ -12,9 +12,19 @@ defmodule ApiTimeManagerWeb.WorkingtimeJSON do
   Renders a single workingtime.
   """
   def show(%{workingtime: workingtime}) do
-    %{data: data(workingtime)}
+    %{
+      data: data(workingtime)
+    }
   end
 
+  @doc """
+  Renders an error.
+  """
+  def error(%{error: error}) do
+    %{error: error}
+  end
+
+  # This function is called for each workingtime. If it's a valid Workingtime struct, it will render the correct data.
   defp data(%Workingtime{} = workingtime) do
     %{
       id: workingtime.id,

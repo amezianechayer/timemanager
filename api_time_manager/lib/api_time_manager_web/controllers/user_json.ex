@@ -25,8 +25,6 @@ defmodule ApiTimeManagerWeb.UserJSON do
     %{error: error}
   end
 
-
-  # defp data(%User{} = user) do
   defp data(user) do
     %{
       id: user.id,
