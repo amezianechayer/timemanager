@@ -6,7 +6,7 @@ defmodule ApiTimeManagerWeb.Router do
   end
 
   pipeline :authenticate do
-    plug ApiTimeManagerWeb.Plugs.AuthPlug, ["user", "manager","admin"]
+    plug ApiTimeManagerWeb.Plugs.AuthPlug, ["user", "manager", "admin"]
   end
 
   pipeline :require_manager do
@@ -32,15 +32,14 @@ defmodule ApiTimeManagerWeb.Router do
     put "/users/me", UserController, :update_current_user
     delete "/users/me", UserController, :delete_current_user
 
+    # Clock Routes
+    post "/clocks", ClockController, :create_for_authenticated_user
+    get "/clocks", ClockController, :show_for_authenticated_user
+
     # Working Time Routes
     resources "/workingtimes", WorkingtimeController, except: [:new, :edit]
     post "/workingtimes/:userID", WorkingtimeController, :create_for_user
     get "/workingtimes/:userID/:id", WorkingtimeController, :get_working_time_for_user
-
-    # Clock Routes
-    get "/clocks", ClockController, :index
-    get "/clocks/:userID", ClockController, :show_by_user
-    post "/clocks/:userID", ClockController, :create_for_user
 
     # Route accessible uniquement aux admins
     scope "/admin" do
@@ -49,7 +48,12 @@ defmodule ApiTimeManagerWeb.Router do
       # Manage users
       get "/users", UserController, :fetch_users
       resources "/users", UserController, except: [:new, :edit]
-      # get "/users", UserController, :index
+
+      # Manage clocks
+      post "/clocks/:userID", ClockController, :create_for_user
+      get "/clocks", ClockController, :index
+      get "/clocks/:userID", ClockController, :show_by_user
+
 
       # Promote user
       # post "/promote/:userID", PromoteController, :promote_user

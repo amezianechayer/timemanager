@@ -7,7 +7,6 @@ defmodule ApiTimeManagerWeb.UserController do
   action_fallback ApiTimeManagerWeb.FallbackController
 
   def index(conn, _params) do
-    # users_roles = conn.assigns[:current_user_role]
     users = Accounts.list_users()
     render(conn, :index, users: users)
   end

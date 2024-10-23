@@ -22,7 +22,26 @@ defmodule ApiTimeManagerWeb.ClockController do
     with {:ok, %Clock{} = clock} <- Clocks.create_clock(clock_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", ~p"/api/clocks/#{user_id}")
+      # |> put_resp_header("location", ~p"/api/admin/clocks/#{user_id}")
+      |> render(:show, clock: clock)
+    end
+  end
+
+  def show_for_authenticated_user(conn, _params) do
+    user_id = conn.assigns[:current_user_id]
+    clocks = Clocks.get_clocks_by_user(user_id)
+    updated_clocks = Enum.map(clocks, fn clock -> Map.put(clock, :user_id, user_id) end)
+    render(conn, :index, clocks: updated_clocks)
+  end
+
+  def create_for_authenticated_user(conn, %{"clock" => clock_params}) do
+    user_id = conn.assigns[:current_user_id]
+    clock_params = Map.put(clock_params, "user_id", user_id)
+
+    with {:ok, %Clock{} = clock} <- Clocks.create_clock(clock_params) do
+      conn
+      |> put_status(:created)
+      # |> put_resp_header("location", ~p"/api/clocks/#{user_id}")
       |> render(:show, clock: clock)
     end
   end
@@ -57,3 +76,7 @@ defmodule ApiTimeManagerWeb.ClockController do
   #   end
   # end
 end
+
+# UPDATE users_roles
+# SET role_id = 3
+# WHERE id = 1;
