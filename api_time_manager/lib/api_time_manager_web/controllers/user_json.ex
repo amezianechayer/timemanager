@@ -9,6 +9,13 @@ defmodule ApiTimeManagerWeb.UserJSON do
   end
 
   @doc """
+  Renders a list of users for a specific team.
+  """
+  def index_by_team(%{users: users}) do
+    %{data: for(user <- users, do: data(user))}
+  end
+
+  @doc """
   Renders a single user.
   """
   def show(%{user: user, token: token}) do
@@ -16,21 +23,11 @@ defmodule ApiTimeManagerWeb.UserJSON do
   end
 
   @doc """
-  Renders a list of users.
+  Renders a single user without a token.
   """
-  def index(%{users: users}) do
-    %{data: for(user <- users, do: data(user))}
-  end
-
-  @doc """
-  Renders a single user.
-  """
-
-  #SUPPRESION DU TOKEN POUR LA ROUTE GET /api/users/:id
   def show(%{user: user}) do
     %{data: data(user)}
   end
-  #SUPPRESION DU TOKEN POUR LA ROUTE GET /api/users/:id
 
   @doc """
   Renders an error.
@@ -39,14 +36,14 @@ defmodule ApiTimeManagerWeb.UserJSON do
     %{error: error}
   end
 
-
   defp data(%User{} = user) do
     %{
       id: user.id,
       username: user.username,
       email: user.email,
-      hash_password: user.hash_password
+      team_id: user.team_id  # Ajoutez le team_id ici
+      # Suppression du hash_password pour la sécurité
+      # hash_password: user.hash_password
     }
   end
 end
-

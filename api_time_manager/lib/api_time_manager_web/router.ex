@@ -11,6 +11,13 @@ defmodule ApiTimeManagerWeb.Router do
     resources "/users", UserController, except: [:new, :edit]
     get "/users/:id", UserController, :show
     post "/users/login", UserController, :sign_in
+    get "/users/team/:team_id", UserController, :index_by_team
+    # Compagnies Routes
+    resources "/compagnies", CompagnyController, except: [:new, :edit]
+    # Teams Routes
+    resources "/teams", TeamController, except: [:new, :edit]
+    get "/teams/:company_id", TeamController, :get_teams_by_company
+    post "/teams/:team_id/users/:user_id", UserController, :assign_user_to_team
 
     # Working Time Routes
     resources "/workingtimes", WorkingtimeController, except: [:new, :edit]
@@ -35,4 +42,3 @@ defmodule ApiTimeManagerWeb.Router do
     end
   end
 end
-
