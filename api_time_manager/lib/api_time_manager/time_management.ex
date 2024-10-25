@@ -102,11 +102,18 @@ defmodule ApiTimeManager.TimeManagement do
     Workingtime.changeset(workingtime, attrs)
   end
 
-  # Custom actions
   def get_workingtime_for_user(user_id, id) do
     Repo.one(
       from w in Workingtime,
       where: w.user_id == ^user_id and w.id == ^id,
+      preload: [:user]
+    )
+  end
+
+  def list_workingtimes_for_user(user_id) do
+    Repo.all(
+      from w in Workingtime,
+      where: w.user_id == ^user_id,
       preload: [:user]
     )
   end

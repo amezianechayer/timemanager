@@ -22,7 +22,7 @@
       },
       options: {
         type: Object,
-        required: false,
+        required: true,
         default: () => ({})
       }
     }

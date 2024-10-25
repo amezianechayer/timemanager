@@ -4,15 +4,20 @@ import Config
 config :api_time_manager, ApiTimeManager.Repo,
   username: "postgres",
   password: "postgres",
-  hostname: "db",
-
-  # database: "api_time_manager_dev",
-
-  database: "timemanager_dev",
-
+  hostname: "localhost",
+  database: "api_time_manager_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
+
+# POUR ADRIEN
+  # username: "postgres",
+  # password: "postgres",
+  # hostname: "localhost",
+  # database: "timemanager_dev",
+  # stacktrace: true,
+  # show_sensitive_data_on_connection_error: true,
+  # pool_size: 10
 
 # For development, we disable any cache and enable
 # debugging and code reloading.

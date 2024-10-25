@@ -12,7 +12,9 @@ defmodule ApiTimeManagerWeb.WorkingtimeJSON do
   Renders a single workingtime.
   """
   def show(%{workingtime: workingtime}) do
-    %{data: data(workingtime)}
+    %{
+      data: data(workingtime)
+    }
   end
 
   @doc """
