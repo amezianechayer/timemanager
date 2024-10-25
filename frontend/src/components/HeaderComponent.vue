@@ -9,7 +9,6 @@
 
       <div class="flex items-center space-x-8 text-white text-2xl font-semibold">
         <router-link to="/home" class="hover:underline p-2">Home</router-link>
-        <router-link to="/about" class="hover:underline p-2">About</router-link>
         <router-link to="/moderation" class="hover:underline p-2">Moderation</router-link>
         <router-link to="/board" class="hover:underline p-2">Board</router-link>
         <router-link to="/chart" class="hover:underline p-2">Chart</router-link>

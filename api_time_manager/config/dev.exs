@@ -2,13 +2,17 @@ import Config
 
 # Configure your database
 config :api_time_manager, ApiTimeManager.Repo,
-       username: "postgres",
-       password: "postgres",
-       hostname: "localhost",
-       database: "timemanager_dev",
-       stacktrace: true,
-       show_sensitive_data_on_connection_error: true,
-       pool_size: 10
+  username: "postgres",
+  password: "postgres",
+  hostname: "db",
+
+  # database: "api_time_manager_dev",
+
+  database: "timemanager_dev",
+
+  stacktrace: true,
+  show_sensitive_data_on_connection_error: true,
+  pool_size: 10
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -63,4 +67,3 @@ config :phoenix, :plug_init_mode, :runtime
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
-
