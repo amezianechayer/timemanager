@@ -19,7 +19,7 @@ export default {
 
 <style>
 html, body {
-  background-color: #1d1d1d !important; /* Background color of the page */
+  background-color: #1d1d1d; /* Background color of the page */
   color: #ffffff !important; /* Text color */
   height: 100%; /* Ensure the body takes the full height of the viewport */
   margin: 0;

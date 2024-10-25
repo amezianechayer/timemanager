@@ -22,7 +22,6 @@ defmodule ApiTimeManagerWeb.ClockJSON do
       status: clock.status,
       user_id: clock.user_id,
       inserted_at: clock.inserted_at
-
     }
   end
 end

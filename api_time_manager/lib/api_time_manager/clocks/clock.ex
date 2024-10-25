@@ -6,8 +6,7 @@ defmodule ApiTimeManager.Clocks.Clock do
     field :status, :boolean, default: false
     field :time, :string
     belongs_to :user, ApiTimeManager.Accounts.User
-
-    timestamps(type: :utc_datetime)
+    field :inserted_at, :utc_datetime
   end
 
   @doc false

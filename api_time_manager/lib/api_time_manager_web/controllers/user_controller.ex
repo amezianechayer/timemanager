@@ -1,14 +1,51 @@
 defmodule ApiTimeManagerWeb.UserController do
   use ApiTimeManagerWeb, :controller
-
+  alias ApiTimeManager.Repo
   alias ApiTimeManager.Accounts
   alias ApiTimeManager.Accounts.User
 
   action_fallback ApiTimeManagerWeb.FallbackController
 
+  def create(conn, %{"user" => user_params}) do
+    user_params = Map.put_new(user_params, "team_id", nil)
+
+    with {:ok, %User{} = user} <- Accounts.create_user(user_params),
+         {:ok, token, _full_claims} <- ApiTimeManager.Guardian.encode_and_sign(user) do
+      conn
+      |> put_status(:created)
+      |> render(:show, user: user, token: token)
+    end
+  end
+
+  def index_by_team(conn, %{"team_id" => team_id}) do
+    users = ApiTimeManager.Accounts.User.list_users_by_team(team_id) 
+    render(conn, "index.json", users: users)
+  end
+
   def index(conn, _params) do
     users = Accounts.list_users()
     render(conn, :index, users: users)
+  end
+
+  def assign_user_to_team(conn, %{"team_id" => team_id, "user_id" => user_id}) do
+    team_id = String.to_integer(team_id)
+
+    case User.get_user(user_id) do
+      nil ->
+        conn
+        |> put_status(:not_found)
+        |> json(%{error: "User not found"})
+      user ->
+        case User.assign_team(user, team_id) do
+          {:ok, updated_user} ->
+            updated_user = Repo.preload(updated_user, :team)  # Précharge l'association `team`
+            json(conn, updated_user)
+          {:error, changeset} ->
+            conn
+            |> put_status(:unprocessable_entity)
+            |> json(%{error: changeset})
+        end
+    end
   end
 
   def show(conn, %{"id" => id}) do
@@ -63,4 +100,17 @@ defmodule ApiTimeManagerWeb.UserController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  # def sign_in(conn, %{"user" => %{"email" => email, "password" => hash_password}}) do
+  #   case ApiTimeManager.Guardian.authenticate(email, hash_password) do
+  #     {:ok, user, token} ->
+  #       conn
+  #       |> put_status(:ok)
+  #       |> render(:show, user: user, token: token)
+
+  #     {:error, _reason} ->
+  #       conn
+  #       |> put_status(:unauthorized)
+  #       |> render(:show, error: "invalid credentials")
+  # end
 end

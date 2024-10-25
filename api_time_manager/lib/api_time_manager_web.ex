@@ -44,6 +44,7 @@ defmodule ApiTimeManagerWeb do
       import Plug.Conn
       import ApiTimeManagerWeb.Gettext
 
+
       unquote(verified_routes())
     end
   end
