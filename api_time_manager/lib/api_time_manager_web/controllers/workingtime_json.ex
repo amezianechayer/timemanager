@@ -15,14 +15,6 @@ defmodule ApiTimeManagerWeb.WorkingtimeJSON do
     %{data: data(workingtime)}
   end
 
-  @doc """
-  Renders an error.
-  """
-  def error(%{error: error}) do
-    %{error: error}
-  end
-
-  # defp data(%Workingtime{} = workingtime) do
   defp data(%Workingtime{} = workingtime) do
     %{
       id: workingtime.id,
