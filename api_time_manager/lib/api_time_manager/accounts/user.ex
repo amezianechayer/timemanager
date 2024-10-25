@@ -10,6 +10,7 @@ defmodule ApiTimeManager.Accounts.User do
     field :username, :string
     field :email, :string
     field :hash_password, :string
+
     has_many :clocks, ApiTimeManager.Clocks.Clock
     has_many :working_times, ApiTimeManager.WorkingTimes.WorkingTime
     has_many :workingtimes, ApiTimeManager.TimeManagement.Workingtime
@@ -21,6 +22,18 @@ defmodule ApiTimeManager.Accounts.User do
 
   def changeset(user, attrs) do
     user
+
+    |> cast(attrs, [:username, :email, :hash_password, :team_id])
+    |> validate_required([:username, :email, :hash_password])
+    |> unique_constraint(:email)
+    |> validate_length(:hash_password, min: 6)
+  end
+
+  def get_user(id) do
+    Repo.get(__MODULE__, id)
+  end
+
+
     |> cast(attrs, [:email, :username, :hash_password, :team_id])
     |> validate_required([:email, :username, :hash_password])
     |> validate_format(:email, ~r/@/)
@@ -37,6 +50,7 @@ defmodule ApiTimeManager.Accounts.User do
   def get_user(id) do
     Repo.get(__MODULE__, id)
   end
+
 
   def assign_team(%__MODULE__{} = user, team_id) do
     user

@@ -18,7 +18,12 @@ defmodule ApiTimeManagerWeb.UserController do
   end
 
   def index_by_team(conn, %{"team_id" => team_id}) do
+
+    users = ApiTimeManager.Accounts.User.list_users_by_team(team_id)  # Assurez-vous d'utiliser le bon module
+
+
     users = ApiTimeManager.Accounts.User.list_users_by_team(team_id) 
+
     render(conn, "index.json", users: users)
   end
 
@@ -69,6 +74,7 @@ defmodule ApiTimeManagerWeb.UserController do
     end
   end
 
+
   def fetch_users(conn, params) do
     email = Map.get(params, "email")
     username = Map.get(params, "username")
@@ -113,4 +119,5 @@ defmodule ApiTimeManagerWeb.UserController do
   #       |> put_status(:unauthorized)
   #       |> render(:show, error: "invalid credentials")
   # end
+
 end
