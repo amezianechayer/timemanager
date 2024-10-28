@@ -60,12 +60,16 @@ export default {
     };
   },
   mounted() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
     this.fetchUsers();
   },
   methods: {
     async fetchUsers() {
       try {
-        const response = await axios.get('http://localhost:4000/api/users');
+        const response = await axios.get('http://localhost:4000/api/admin/users');
         this.users = response.data.data;
       } catch (error) {
         console.error('Erreur lors de la récupération des utilisateurs:', error);
@@ -77,7 +81,7 @@ export default {
         this.resetData(); // Réinitialiser les données avant de récupérer les nouvelles
         try {
           // Récupérer les clocks de l'utilisateur sélectionné
-          const response = await axios.get(`http://localhost:4000/api/clocks/${this.selectedUser}`);
+          const response = await axios.get(`http://localhost:4000/api/admin/clocks/${this.selectedUser}`);
           this.clocks = response.data.data;
 
           console.log('Clocks récupérées:', this.clocks); // Log pour débogage
@@ -118,6 +122,7 @@ export default {
       const date = new Date(dateString);
       return date.toLocaleString('fr-FR', options);
     }
+
   }
   };
 </script>

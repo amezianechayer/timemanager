@@ -82,10 +82,12 @@ export default {
       }
 
       try {
-        const response = await axios.post('http://localhost:4000/api/users', {
-          username: username.value,
-          email: email.value,
-          hash_password: password.value,
+        const response = await axios.post('http://localhost:4000/api/register', {
+          user: {
+            username: username.value,
+            email: email.value,
+            hash_password: password.value,
+          }
         });
 
         if (response.status === 201) {

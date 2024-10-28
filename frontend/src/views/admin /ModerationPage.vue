@@ -24,6 +24,7 @@
           <button @click="endDay(item)" :disabled="!item.start || item.end">Terminer la journée</button>
         </td>
         <td>{{ item.workingTime }}</td>
+        <td>{{ item.roles }}</td>
       </tr>
       </tbody>
     </table>
@@ -38,53 +39,52 @@ export default {
   components: { HeaderComponent },
   data() {
     return {
-      reports: [], // Liste des utilisateurs avec les détails des heures de travail
-      userId: null // L'ID de l'utilisateur courant (à récupérer une seule fois)
+      reports: [],
+      userId: null
     };
   },
   methods: {
     async fetchUsers() {
       try {
-        const response = await axios.get("http://localhost:4000/api/users");
+        const response = await axios.get("http://localhost:4000/api/admin/users");
         this.reports = response.data.data.map(user => ({
           id: user.id,
           username: user.username,
-          start: null,  // Statut initial du début de journée
-          end: null,    // Statut initial de la fin de journée
-          workingtimeId: null, // ID du workingtime à mettre à jour lors de la fin de journée
-          workingTime: null // Temps travaillé aujourd'hui
+          roles: user.roles[0],
+          start: null,
+          end: null,
+          workingtimeId: null,
+          workingTime: null
         }));
-        // Récupère l'ID du premier utilisateur (à adapter selon votre logique)
-        this.userId = this.reports[0].id;
+        this.userId = this.reports[0]?.id;
       } catch (error) {
         console.error("Erreur lors de la récupération des utilisateurs", error);
       }
     },
 
-    // Méthode pour commencer la journée
     async startDay(user) {
       try {
-        const response = await axios.post(`http://localhost:4000/api/workingtimes`, {
+        console.log(user);
+        const response = await axios.post(`http://localhost:4000/api/admin/workingtimes/${user.id}`, {
           workingtime: {
             start: new Date().toISOString(),
             user_id: user.id
           }
         });
         const workingtime = response.data.data;
-        user.start = workingtime.start; // Use the start time from the response
-        user.workingtimeId = workingtime.id; // Store the working time ID
+        user.start = workingtime.start;
+        user.workingtimeId = workingtime.id;
       } catch (error) {
         console.error("Error starting the day:", error);
       }
     },
 
     async endDay(user) {
-      if (user.end) return; // Empêche les clics multiples
+      if (user.end) return;
       try {
         const endTime = new Date().toISOString();
 
-        // Mise à jour du temps de fin dans la table workingtimes
-        const response = await axios.put(`http://localhost:4000/api/workingtimes/${user.workingtimeId}`, {
+        const response = await axios.put(`http://localhost:4000/api/admin/workingtimes/${user.id}/${user.workingtimeId}`, {
           workingtime: {
             end: endTime
           }
@@ -92,14 +92,12 @@ export default {
         const updatedWorkingTime = response.data.data;
         user.end = updatedWorkingTime.end;
 
-        // Calcule le temps travaillé dans le bon format
         const totalTimeWorked = this.calculateWorkingTime(user.start, user.end);
         user.workingTime = totalTimeWorked;
 
-        // Envoi du temps de travail sous le bon format
-        await axios.post(`http://localhost:4000/api/clocks/${user.id}`, {
+        await axios.post(`http://localhost:4000/api/admin/clocks/${user.id}`, {
           clock: {
-            time: totalTimeWorked, // Temps travaillé au format "hh:mm:ss"
+            time: totalTimeWorked,
             status: true
           }
         });
@@ -108,24 +106,30 @@ export default {
       }
     },
 
-
     calculateWorkingTime(start, end) {
       const startTime = new Date(start).getTime();
       const endTime = new Date(end).getTime();
       const diffMs = endTime - startTime;
 
-      const diffHrs = String(Math.floor(diffMs / 3600000)).padStart(2, '0'); // Convertit en heures
-      const diffMins = String(Math.floor((diffMs % 3600000) / 60000)).padStart(2, '0'); // Convertit en minutes
-      const diffSecs = String(Math.floor((diffMs % 60000) / 1000)).padStart(2, '0'); // Convertit en secondes
+      const diffHrs = String(Math.floor(diffMs / 3600000)).padStart(2, '0');
+      const diffMins = String(Math.floor((diffMs % 3600000) / 60000)).padStart(2, '0');
+      const diffSecs = String(Math.floor((diffMs % 60000) / 1000)).padStart(2, '0');
 
-      return `${diffHrs}:${diffMins}:${diffSecs}`; // Retourne le format "hh:mm:ss"
+      return `${diffHrs}:${diffMins}:${diffSecs}`;
     }
   },
-    mounted() {
+  mounted() {
+    // Ajoutez le token aux en-têtes Axios ici
+    const token = localStorage.getItem('token');
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+
     this.fetchUsers(); // Appeler la méthode pour récupérer les utilisateurs lors du montage du composant
   }
 };
 </script>
+
 
 <style scoped>
 .moderation-container {

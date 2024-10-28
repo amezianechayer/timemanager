@@ -15,6 +15,7 @@
           <label for="userType">Type d'utilisateur</label>
           <select id="userType" v-model="userType" required>
             <option value="admin">Admin</option>
+            <option value="admin">Manager</option>
             <option value="user">Utilisateur</option>
           </select>
         </div>
@@ -55,15 +56,17 @@ export default {
       }
 
       try {
-        const { data } = await axios.post('http://localhost:4000/api/users/login', {
+        const { data } = await axios.post('http://localhost:4000/api/login', {
           user: {
             email: email.value,
             password: hash_password.value
           }
         }, { withCredentials: true });
 
-        axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-        localStorage.setItem('token', data.token); // Store the token in localStorage
+        axios.defaults.headers.common['Authorization'] = `Bearer ${data.data.token}`;
+        localStorage.setItem('token', data.data.token);
+        console.log(data)// Store the token in localStorage
+        console.log(data.token)
         router.push('/home'); // Redirect to home page
       } catch (error) {
         errorMessage.value = error.response?.data?.error || 'Nom d\'utilisateur ou mot de passe incorrect.';
@@ -198,3 +201,4 @@ button:hover {
   text-decoration: underline;
 }
 </style>
+

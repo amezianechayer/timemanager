@@ -22,20 +22,8 @@ defmodule ApiTimeManager.Accounts.User do
 
   def changeset(user, attrs) do
     user
-
     |> cast(attrs, [:username, :email, :hash_password, :team_id])
     |> validate_required([:username, :email, :hash_password])
-    |> unique_constraint(:email)
-    |> validate_length(:hash_password, min: 6)
-  end
-
-  def get_user(id) do
-    Repo.get(__MODULE__, id)
-  end
-
-
-    |> cast(attrs, [:email, :username, :hash_password, :team_id])
-    |> validate_required([:email, :username, :hash_password])
     |> validate_format(:email, ~r/@/)
     |> validate_length(:username, min: 3, max: 20, message: "Must be between 3 and 20 characters")
     |> unique_constraint(:email)
@@ -47,10 +35,11 @@ defmodule ApiTimeManager.Accounts.User do
     change(changeset, hash_password: Bcrypt.hash_pwd_salt(hash_password))
   end
 
+  defp put_password_hash(changeset), do: changeset
+
   def get_user(id) do
     Repo.get(__MODULE__, id)
   end
-
 
   def assign_team(%__MODULE__{} = user, team_id) do
     user

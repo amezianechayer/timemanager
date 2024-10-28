@@ -66,7 +66,7 @@ export default {
     // Fonction pour récupérer la liste des utilisateurs
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/users');
+        const response = await axios.get('http://localhost:4000/api/admin/users');
         users.value = response.data.data; // Assigner la liste des utilisateurs
       } catch (error) {
         console.error('Erreur lors de la récupération des utilisateurs:', error);
@@ -78,7 +78,7 @@ export default {
       try {
         if (!selectedUserId.value) return;
 
-        const response = await axios.get(`http://localhost:4000/api/users/${selectedUserId.value}`);
+        const response = await axios.get(`http://localhost:4000/api/admin/users/${selectedUserId.value}`);
         user.value = response.data.data;
         user.value.totalHoursWorked = await getTotalHours(selectedUserId.value);
       } catch (error) {
@@ -94,7 +94,7 @@ export default {
     // Récupérer le total d'heures travaillées
     const getTotalHours = async (userId) => {
       try {
-        const response = await axios.get(`http://localhost:4000/api/clocks/${userId}`);
+        const response = await axios.get(`http://localhost:4000/api/admin/clocks/${userId}`);
         const clocks = response.data.data;
 
         const totalSeconds = clocks.reduce((total, clock) => {
@@ -132,6 +132,11 @@ export default {
     };
 
     onMounted(() => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      }
+
       fetchUsers(); // Récupérer la liste des utilisateurs au montage
     });
 
@@ -142,6 +147,7 @@ export default {
       fetchUser,
     };
   },
+
 };
 </script>
 

@@ -83,7 +83,7 @@ export default {
   methods: {
     async fetchEmployees() {
       try {
-        const response = await axios.get('http://localhost:4000/api/users');
+        const response = await axios.get('http://localhost:4000/api/admin/users');
         this.employees = response.data.data;
         await this.calculateTotalHours(); // Calcule les heures après la récupération des employés
         this.filteredEmployees = this.employees; // Initialement, on affiche tous les utilisateurs
@@ -98,7 +98,7 @@ export default {
     },
     async getTotalHours(userId) {
       try {
-        const response = await axios.get(`http://localhost:4000/api/clocks/${userId}`);
+        const response = await axios.get(`http://localhost:4000/api/admin/clocks/${userId}`);
         const clocks = response.data.data;
 
         const totalSeconds = clocks.reduce((total, clock) => {
@@ -162,9 +162,17 @@ export default {
     }
   },
   mounted() {
-    this.fetchEmployees(); // Récupère les utilisateurs quand le composant est monté
+    this.fetchEmployees();
+    const token = localStorage.getItem('token');
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+    this.fetchEmployees(); // Appeler la méthode pour récupérer les utilisateurs lors du montage du composant
+    this.getTotalHours(); // Appeler la méthode pour récupérer les heures totales lors du montage du composant
+
   }
 };
+
 </script>
 
 <style scoped>

@@ -113,7 +113,7 @@ export default {
   methods: {
     async fetchCompagnies() {
       try {
-        const response = await axios.get('http://localhost:4000/api/compagnies');
+        const response = await axios.get('http://localhost:4000/api/admin/compagnies');
         console.log('Compagnies récupérées:', response.data.data);
         this.corpsMetiers = response.data.data.map(metier => ({
           ...metier,
@@ -131,14 +131,14 @@ export default {
 
     async fetchTeams(companyId) {
       try {
-        const response = await axios.get(`http://localhost:4000/api/teams?companyId=${companyId}`);
+        const response = await axios.get(`http://localhost:4000/api/admin/teams?companyId=${companyId}`);
         console.log('Équipes récupérées pour la compagnie', companyId, ':', response.data);
 
         const metier = this.corpsMetiers.find(metier => metier.id === companyId);
         if (metier) {
           // Récupération des utilisateurs pour chaque équipe
           for (const team of response.data.data) {
-            const usersResponse = await axios.get(`http://localhost:4000/api/users?teamId=${team.id}`);
+            const usersResponse = await axios.get(`http://localhost:4000/api/admin/users?teamId=${team.id}`);
             team.users = usersResponse.data.data.filter(user => user.team_id === team.id); // Filtrer les utilisateurs par team_id
           }
           metier.teams = response.data.data; // Ajoute les équipes au bon métier
@@ -186,7 +186,7 @@ export default {
     async ajouterCompagnie() {
       try {
         console.log("Données de la nouvelle compagnie:", this.nouvelleCompagnie);
-        const response = await axios.post('http://localhost:4000/api/compagnies', {
+        const response = await axios.post('http://localhost:4000/api/admin/compagnies', {
           compagny: this.nouvelleCompagnie
         });
         console.log('Réponse après ajout de la compagnie:', response.data);
@@ -210,7 +210,7 @@ export default {
           company_id: metier.id
         });
         try {
-          const response = await axios.post('http://localhost:4000/api/teams', {
+          const response = await axios.post('http://localhost:4000/api/admin/teams', {
             team: {
               name: nomEquipe,
               company_id: metier.id
@@ -228,7 +228,7 @@ export default {
 
     async fetchAvailableUsers() {
       try {
-        const response = await axios.get('http://localhost:4000/api/users');
+        const response = await axios.get('http://localhost:4000/api/admin/users');
         this.availableUsers = response.data.data.filter(user => !user.team_id); // Filtrer les utilisateurs sans team_id
         console.log('Utilisateurs disponibles:', this.availableUsers);
       } catch (error) {
@@ -245,7 +245,7 @@ export default {
       if (this.selectedUserId && this.selectedTeamId) {
         console.log("Ajout de l'utilisateur:", this.selectedUserId, "à l'équipe:", this.selectedTeamId);
         try {
-          await axios.patch(`http://localhost:4000/api/users/${this.selectedUserId}`, {
+          await axios.patch(`http://localhost:4000/api/admin/users/${this.selectedUserId}`, {
             user: {
               team_id: this.selectedTeamId // Mettre à jour team_id pour l'utilisateur
             }
@@ -253,7 +253,7 @@ export default {
           console.log('Utilisateur ajouté à l\'équipe avec succès');
           const team = this.corpsMetiers[this.selectedMetierIndex].teams.find(t => t.id === this.selectedTeamId);
           if (team) {
-            const userResponse = await axios.get(`http://localhost:4000/api/users/${this.selectedUserId}`);
+            const userResponse = await axios.get(`http://localhost:4000/api/admin/users/${this.selectedUserId}`);
             team.users.push(userResponse.data.data); // Ajouter l'utilisateur à l'équipe
             console.log('Mise à jour des utilisateurs de l\'équipe:', team.users);
           }
@@ -265,9 +265,15 @@ export default {
     }
   },
   mounted() {
+      const token = localStorage.getItem('token');
+      if (token) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      }
     this.fetchCompagnies();
   }
+
 };
+
 </script>
 
 <style scoped>
