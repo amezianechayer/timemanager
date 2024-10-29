@@ -1,9 +1,10 @@
-version: '3'  
+version: '3'
 
 services:
   frontend:
     build:
       context: ./frontend  
+    image: darkam/t-poo-700-mar_9-frontend  # Ajout de l'image
     ports:
       - "8080:8080"  
     networks:
@@ -12,6 +13,7 @@ services:
   api_time_manager:
     build:
       context: ./api_time_manager  
+    image: darkam/t-poo-700-mar_9-api_time_manager  # Ajout de l'image
     environment:
       PG_USER: postgres
       PG_PWD: postgres
