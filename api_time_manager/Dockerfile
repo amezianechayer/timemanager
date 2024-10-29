@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 FROM elixir:1.14.5-alpine AS build
 
 RUN apk add --no-cache build-base npm git
@@ -25,7 +24,7 @@ COPY --from=build /app/_build /app/_build
 EXPOSE 4000
 
 CMD ["mix", "phx.server"]
-=======
+
 FROM elixir:latest
 
 RUN mkdir /api_time_manager
@@ -42,4 +41,3 @@ RUN mix do compile
 EXPOSE 4000
 
 CMD ["bash", "entrypoint.sh"]
->>>>>>> docker

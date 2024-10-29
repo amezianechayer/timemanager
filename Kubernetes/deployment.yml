@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: time-manager-app
+  labels:
+    app: time-manager-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: time-manager-app
+  template:
+    metadata:
+      labels:
+        app: time-manager-app
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: api-time-manager
+        image: darkam/t-poo-700-mar_9-api_time_manager:latest
+        imagePullPolicy: "Always"
+        ports:
+        - containerPort: 4000
+      - name: frontend
+        image: darkam/t-poo-700-mar_9-frontend:latest
+        imagePullPolicy: "Always"
+        ports:
+        - containerPort: 8080

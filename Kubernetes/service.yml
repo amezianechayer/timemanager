@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: time-manager-app
+  labels:
+    app: time-manager-app
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080 # Port exposé pour le frontend
+  selector:
+    app: time-manager-app

@@ -2,23 +2,13 @@ import Config
 
 # Configure your database
 config :api_time_manager, ApiTimeManager.Repo,
-  # username: "postgres",
-  # password: "postgres",
-  # hostname: "localhost",
-  # database: "api_time_manager_dev",
-  # stacktrace: true,
-  # show_sensitive_data_on_connection_error: true,
-  # pool_size: 10
-
-# POUR ADRIEN
   username: "postgres",
   password: "postgres",
-  hostname: "localhost",
+  hostname: "db",
   database: "timemanager_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
-
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -27,14 +17,14 @@ config :api_time_manager, ApiTimeManager.Repo,
 # watchers to your application. For example, we can use it
 # to bundle .js and .css sources.
 config :api_time_manager, ApiTimeManagerWeb.Endpoint,
-       # Binding to loopback ipv4 address prevents access from other machines.
-       # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-       http: [ip: {127, 0, 0, 1}, port: 4000],
-       check_origin: false,
-       code_reloader: true,
-       debug_errors: true,
-       secret_key_base: "nwNQY5DGTXsdOkCM7Vcol8rXBND8ZnuDyV03CsOfeZ0UwJfSjnRaJKF0W2UjARI+",
-       watchers: []
+  # Binding to loopback ipv4 address prevents access from other machines.
+  # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
+  http: [ip: {0, 0, 0, 0}, port: 4000],
+  check_origin: false,
+  code_reloader: true,
+  debug_errors: true,
+  secret_key_base: "nwNQY5DGTXsdOkCM7Vcol8rXBND8ZnuDyV03CsOfeZ0UwJfSjnRaJKF0W2UjARI+",
+  watchers: []
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed
@@ -73,4 +63,3 @@ config :phoenix, :plug_init_mode, :runtime
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
-

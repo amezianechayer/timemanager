@@ -1,21 +1,14 @@
-FROM node:20-alpine
+FROM node:lts-alpine
 
-WORKDIR /usr/src/frontend
+RUN npm install -g http-server
+
+WORKDIR /frontend
 
 COPY package*.json ./
 
-RUN apk add --no-cache git
-
-RUN npm install npm@latest -g
-RUN npm install npm@latest -g
-
-
-# RUN npm ci --only=production
-# RUN npm install --production
 RUN npm install
 
-COPY . /usr/src/frontend
+COPY . .
 
 EXPOSE 8080
-
 CMD ["npm", "run", "serve"]
